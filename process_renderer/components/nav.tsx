@@ -1,10 +1,12 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { darken } from 'polished';
 
 interface LinkType {
-  isActive: boolean
+  isActive: boolean,
+  editionId: string
 }
 
 const navData = [
@@ -37,8 +39,8 @@ const List = styled.li<LinkType>`
     flex-basis: ${(props) => (props.isActive ? '88px' : '80px')};
     height: ${(props) => (props.isActive ? '100%' : '90%')};
     z-index: ${(props) => (props.isActive ? 0 : null)};
-    color : ${(props) => (props.isActive ? 'white' : props.theme.palette.string)};
-    background-color:${(props) => (props.isActive ? darken(0.15, props.theme.palette.themeMain) : props.theme.palette.silver)};
+    color : ${(props) => (props.isActive ? 'white' : props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
+    background-color:${(props) => (props.isActive ? darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain) : props.theme.palette.silver)};
     border-radius:5px 5px 0 0;
     display: flex;
     justify-content: center;
@@ -46,7 +48,7 @@ const List = styled.li<LinkType>`
     &:hover{
         z-index: ${(props) => (props.isActive ? 0 : null)};
         color : ${(props) => (props.isActive ? null : 'white')};
-        background-color:${(props) => (props.isActive ? null : darken(0.15, props.theme.palette.themeMain))};
+        background-color:${(props) => (props.isActive ? null : darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain))};
         height:100%;
         flex-basis: ${(props) => (props.isActive ? null : '88px')};
     }
@@ -63,13 +65,13 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     border-radius:5px 5px 0 0;
 `;
-export default function Nav() {
+export default function Nav({ editionId }:{editionId:string}) {
   const { pathname } = useLocation();
   return (
     <Container>
       <Ulist>
         {navData.map((data) => (
-          <List isActive={data.path === pathname}>
+          <List editionId={editionId} isActive={data.path === pathname}>
             <StyledLink to={data.path}>{data.title}</StyledLink>
           </List>
         ))}
