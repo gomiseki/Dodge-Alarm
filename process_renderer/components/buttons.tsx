@@ -4,7 +4,7 @@ import { darken, lighten } from 'polished';
 
 interface ButtonProps extends React.ComponentProps<'button'>{
     children:React.ReactNode;
-    color?:string;
+    editionId?:string;
     size?:string;
     // eslint-disable-next-line no-unused-vars
     onClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -39,28 +39,27 @@ const Btn = styled.button<ButtonProps>`
     display:flex;
     justify-content: center;
     align-items: center ;
-    background-color:${(props) => props.color && props.theme.palette[props.color]};
+    background-color:${(props) => (props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     &:hover {
-        background-color: ${(props) => props.color && lighten(0.1, props.theme.palette[props.color])};
+        background-color: ${(props) => lighten(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     }
     &:active {
-         background-color: ${(props) => props.color && darken(0.1, props.theme.palette[props.color])};
+         background-color: ${(props) => darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     }
-    background-color: ${(props) => console.log(props)};
     ${sizeStyles};
 `;
 
 const defaultProps = {
-  color: 'themeMain',
+  editionId: '',
   size: 'medium',
 };
 
 export default function Button({
-  children, color, size, onClick,
+  children, editionId, size, onClick,
 }:ButtonProps) {
   return (
     <Btn
-      color={color}
+      editionId={editionId}
       size={size}
       onClick={onClick}
     >
