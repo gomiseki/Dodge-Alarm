@@ -14,6 +14,7 @@ import Button from '../../components/buttons';
 import SelectBox from '../../components/selectBox';
 
 import { Algorithm_type, AlgoPropsToDesc, initAlgo } from '../../../types/algorithm.type';
+import theme from '../../styles/theme';
 
 const Container = styled.div`
     height:100%;
@@ -46,10 +47,13 @@ const IconCover = styled.div`
         ${(props) => props.color && props.theme.tier[props.color].sub}
         );
 `;
-const IconImage = styled.img`
+const IconImage = styled.img<{url:string}>`
+    background-image: url(${(props) => props.url});
     width: 200px;
     height: 200px;
     border-radius: 100px;
+    background-size: cover;
+    background-position: center;
 `;
 
 const Description = styled.div`
@@ -59,14 +63,14 @@ const Description = styled.div`
     border-radius: 5px;
 `;
 const DescBackground = styled.img`
-    width:180px;
+    width:200px;
 `;
 const DescTextContainer = styled.div`
     position:absolute;
     right:0;
     bottom:0;
-    width:110px;
-    height:62px;
+    width:130px;
+    height:70px;
     margin-right: 37px; /* width의 50% */
     margin-bottom: 12px;
     display:flex;
@@ -103,7 +107,14 @@ function Summoner() {
       ? (
         <SummonerContainer>
           <IconCover color={userState.leagueUserInfo.tier.toLowerCase()} style={{}}>
-            <IconImage src={PROFILE_ICON(userState.localUserInfo.profileIconId)} />
+            <IconImage url={
+              theme.editions[userState.leagueUserInfo.summonerId]
+                ? theme.editions[
+                  userState.leagueUserInfo.summonerId].tier[
+                  userState.leagueUserInfo.tier.toLowerCase()].profile
+                : PROFILE_ICON(userState.localUserInfo.profileIconId)
+              }
+            />
           </IconCover>
           <Description>
             <DescBackground src={RANK_PLATE} />
@@ -113,7 +124,12 @@ function Summoner() {
                   fontWeight: 'bold', fontSize: '13px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
                 }}
                 >
-                  {userState.localUserInfo.displayName}
+                  {theme.editions[userState.leagueUserInfo.summonerId]
+                  && theme.editions[userState.leagueUserInfo.summonerId]
+                    .tier[userState.leagueUserInfo.tier.toLowerCase()]
+                    ? theme.editions[userState.leagueUserInfo.summonerId]
+                      .tier[userState.leagueUserInfo.tier.toLowerCase()].nickname
+                    : userState.localUserInfo.displayName}
                 </p>
               </DescText>
               <DescText>
@@ -143,7 +159,7 @@ function Summoner() {
       : (
         <SummonerContainer>
           <IconCover color="iron">
-            <IconImage src={꿀벌} />
+            <IconImage url={꿀벌} />
           </IconCover>
           <Description color="iron">
             <DescBackground src={RANK_PLATE} />
@@ -271,8 +287,9 @@ type optionType = {
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userState = useSelector((state: RootState) => state.USER);
   const algoState = useSelector((state: RootState) => state.ALGORITHM);
-  const [, setAlgoArr] = useState(algoState.map((algo) => (
+  const [algoArr, setAlgoArr] = useState(algoState.map((algo) => (
     { name: algo.algoName, select: algo.selected })));
 
   useEffect(() => {
@@ -281,9 +298,9 @@ export default function Home() {
     );
   }, [algoState]);
 
-  const algoChange = (e: SelectChangeEvent<string>) => {
-    dispatch(selectAlgorithm(e.target.value));
-    window.api.send('dispatch', selectAlgorithm(e.target.value));
+  const algoChange = (e: string) => {
+    dispatch(selectAlgorithm(e));
+    window.api.send('dispatch', selectAlgorithm(e));
   };
 
   const algoRoute = () => {
@@ -297,9 +314,23 @@ export default function Home() {
       </UserInfo>
       <AlgoContainer>
         <p style={{ borderBottom: '1px solid silver', padding: '10px' }}>Algorithm Select</p>
-        <div style={{ display: 'flex', padding: '10px', justifyContent: 'space-between' }}>
-          {/* {algoArr.length > 0 ? <SelectBox /> : null} */}
-          <Button onClick={algoRoute}><AiOutlinePlus style={{ width: '60%', height: '60%' }} /></Button>
+        <div style={{
+          display: 'flex', padding: '10px', justifyContent: 'space-between', alignItems: 'center',
+        }}
+        >
+          {algoArr.length > 0
+            ? (
+              <SelectBox
+                width="90%"
+                editionId={userState.leagueUserInfo.summonerId}
+                options={algoArr.map((algo) => algo.name).filter((name) => name !== 'New')}
+                defaultValue={algoArr.filter((algo) => algo.select)[0].name}
+                selectedOption={algoArr.filter((algo) => algo.select)[0].name}
+                requestFunc={algoChange}
+              />
+            )
+            : null}
+          <Button editionId={userState.leagueUserInfo.summonerId} onClick={algoRoute}><AiOutlinePlus style={{ width: '60%', height: '60%' }} /></Button>
         </div>
         <AlgoDesc
           algoData={algoState.length

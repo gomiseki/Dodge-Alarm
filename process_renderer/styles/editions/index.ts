@@ -20,13 +20,14 @@ interface ITier{
 
 export interface IEdition{
   [index:string]:any,
+  name: string,
   themeMain: string,
   team: string,
   tier: ITier
 }
 
-const editions:IEdition = Object.assign(
+const editions = {
   N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA,
-);
+};
 
 export default editions;

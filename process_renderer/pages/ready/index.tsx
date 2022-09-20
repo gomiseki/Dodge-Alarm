@@ -16,10 +16,10 @@ import theme from '../../styles/theme';
 // import Algo from './algo';
 // import Info from './info';
 
-const Container = styled.div`
+const Container = styled.div<{editionId: string}>`
     width: 100%;
     height: 100%;
-    background-color: ${(props) => props.theme.palette.themeMain};
+    background-color: ${(props) => (props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     display: flex;
     flex-direction: column ;
     align-items: center;
@@ -51,6 +51,15 @@ const EN = styled.div`
     font-size: x-small;
     font-weight:500;
 `;
+
+const Team = styled.span<{teamColor: string}>`
+  background-color: ${(props) => darken(0.15, props.teamColor)};
+  padding: 2px;
+  border-radius: 5px;
+  font-weight:600;
+  margin-right: 5px;
+`;
+
 const Icons = styled.div`
     flex:1;
     padding:20px 20px 0 0;
@@ -61,9 +70,9 @@ const NavContainer = styled.div`
     width: 90%;
     height: 40px;
 `;
-const Main = styled.main`
+const Main = styled.main<{ editionId?: string }>`
     width: 90%;
-    background-color:${(props) => darken(0.15, props.theme.palette.themeMain)};
+    background-color:${(props) => darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     border-radius: 0 5px 5px 5px;
     padding: 10px 0;
 `;
@@ -84,29 +93,38 @@ const closeWindow = () => {
 
 function Ready() {
   const userState = useSelector((state: RootState) => state.USER);
-  console.log(userState.apiStatus.league, userState.leagueUserInfo.summonerId, theme.editions)
+  console.log(userState.apiStatus.league, userState.leagueUserInfo.summonerId, theme);
   return (
     <HashRouter>
-      <Container>
+      <Container editionId={userState.leagueUserInfo.summonerId}>
         <Title>
           <Logo>
             <KR>너 쌩배지! - 닷지 경보기</KR>
             <EN>
               {userState.apiStatus.league
               && theme.editions[userState.leagueUserInfo.summonerId]
-                ? theme.editions[userState.leagueUserInfo.summonerId].team
+                ? (
+                  <>
+                    <Team teamColor={theme.editions[userState.leagueUserInfo.summonerId].themeMain}>
+                      {theme.editions[userState.leagueUserInfo.summonerId].team}
+                    </Team>
+                    {theme.editions[userState.leagueUserInfo.summonerId].name}
+                    {' '}
+                    Edition
+                  </>
+                )
                 : 'League of Legends Dodge analysis tool'}
             </EN>
           </Logo>
           <Icons>
-            <Button onClick={minWindow}><AiOutlineMinus style={{ width: '20px', height: '20px' }} /></Button>
-            <Button onClick={closeWindow}><AiOutlineClose style={{ width: '20px', height: '20px' }} /></Button>
+            <Button editionId={userState.leagueUserInfo.summonerId} onClick={minWindow}><AiOutlineMinus style={{ width: '20px', height: '20px' }} /></Button>
+            <Button editionId={userState.leagueUserInfo.summonerId} onClick={closeWindow}><AiOutlineClose style={{ width: '20px', height: '20px' }} /></Button>
           </Icons>
         </Title>
         <NavContainer>
-          <Nav />
+          <Nav editionId={userState.leagueUserInfo.summonerId} />
         </NavContainer>
-        <Main>
+        <Main editionId={userState.leagueUserInfo.summonerId}>
           <Routes>
             <Route path="" element={<Home />} />
             {/* <Route path="algo" element={<Algo />} />
