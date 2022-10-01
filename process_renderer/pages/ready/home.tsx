@@ -274,16 +274,6 @@ const AlgoContainer = styled.div`
     flex-direction: column;
 `;
 
-const AlgoSelect = styled.select`
-    width: 85%;
-    height: 30px;
-    margin-right: 10px;
-`;
-type optionType = {
-  name: string;
-  select: boolean
-}
-
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -303,10 +293,6 @@ export default function Home() {
     window.api.send('dispatch', selectAlgorithm(e));
   };
 
-  const algoRoute = () => {
-    navigate('/algo');
-  };
-
   return (
     <Container>
       <UserInfo>
@@ -321,7 +307,7 @@ export default function Home() {
           {algoArr.length > 0
             ? (
               <SelectBox
-                width="90%"
+                width="100%"
                 editionId={userState.leagueUserInfo.summonerId}
                 options={algoArr.map((algo) => algo.name).filter((name) => name !== 'New')}
                 defaultValue={algoArr.filter((algo) => algo.select)[0].name}
@@ -330,7 +316,6 @@ export default function Home() {
               />
             )
             : null}
-          <Button editionId={userState.leagueUserInfo.summonerId} onClick={algoRoute}><AiOutlinePlus style={{ width: '60%', height: '60%' }} /></Button>
         </div>
         <AlgoDesc
           algoData={algoState.length

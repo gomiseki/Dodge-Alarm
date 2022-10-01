@@ -40,7 +40,7 @@ const List = styled.li<LinkType>`
     height: ${(props) => (props.isActive ? '100%' : '90%')};
     z-index: ${(props) => (props.isActive ? 0 : null)};
     color : ${(props) => (props.isActive ? 'white' : props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
-    background-color:${(props) => (props.isActive ? darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain) : props.theme.palette.silver)};
+    background-color:${(props) => (props.isActive ? darken(0.2, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain) : props.theme.palette.silver)};
     border-radius:5px 5px 0 0;
     display: flex;
     justify-content: center;
@@ -48,7 +48,7 @@ const List = styled.li<LinkType>`
     &:hover{
         z-index: ${(props) => (props.isActive ? 0 : null)};
         color : ${(props) => (props.isActive ? null : 'white')};
-        background-color:${(props) => (props.isActive ? null : darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain))};
+        background-color:${(props) => (props.isActive ? null : darken(0.2, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain))};
         height:100%;
         flex-basis: ${(props) => (props.isActive ? null : '88px')};
     }

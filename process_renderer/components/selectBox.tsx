@@ -1,4 +1,4 @@
-import { darken, lighten } from 'polished';
+import { lighten } from 'polished';
 import React, {
   Dispatch, SetStateAction, useRef, RefObject, useEffect, useState,
 } from 'react';
@@ -71,7 +71,7 @@ const SelectItem = styled.option<{editionId?:string, type:string}>`
   padding: 6px 10px;
   height: 16px;
   border-radius: 4px;
-  font-size:18px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   color: ${({ theme }) => theme.palette.string};

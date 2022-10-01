@@ -13,7 +13,7 @@ import Nav from '../../components/nav';
 import Home from './home';
 import { RootState } from '../../../store';
 import theme from '../../styles/theme';
-// import Algo from './algo';
+import Algo from './algo';
 // import Info from './info';
 
 const Container = styled.div<{editionId: string}>`
@@ -72,7 +72,7 @@ const NavContainer = styled.div`
 `;
 const Main = styled.main<{ editionId?: string }>`
     width: 90%;
-    background-color:${(props) => darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
+    background-color:${(props) => darken(0.2, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette.themeMain)};
     border-radius: 0 5px 5px 5px;
     padding: 10px 0;
 `;
@@ -127,8 +127,8 @@ function Ready() {
         <Main editionId={userState.leagueUserInfo.summonerId}>
           <Routes>
             <Route path="" element={<Home />} />
-            {/* <Route path="algo" element={<Algo />} />
-            <Route path="info" element={<Info />} /> */}
+            <Route path="algo" element={<Algo />} />
+            {/* <Route path="info" element={<Info />} /> */}
           </Routes>
         </Main>
         <Footer />
