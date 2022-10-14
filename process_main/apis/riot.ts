@@ -58,7 +58,6 @@ export default class RiotAPI {
         throw new Error('PLAYER_TO_HISTORY_API_rejected');
       }
     }
-    console.log(playerData);
     return playerData;
   }
 

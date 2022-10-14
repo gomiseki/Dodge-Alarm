@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlinePlus } from 'react-icons/ai';
 import { selectAlgorithm } from '../../../store/algorithm';
 import { RootState } from '../../../store';
 import {
   PROFILE_ICON, RANK_PLATE, RANK_EMBLEM, 꿀벌,
 } from '../../../consts/riotConsts';
 
-import Button from '../../components/buttons';
 import SelectBox from '../../components/selectBox';
 
 import { Algorithm_type, AlgoPropsToDesc, initAlgo } from '../../../types/algorithm.type';
@@ -47,7 +44,7 @@ const IconCover = styled.div`
         ${(props) => props.color && props.theme.tier[props.color].sub}
         );
 `;
-const IconImage = styled.img<{url:string}>`
+const IconImage = styled.div<{url:string}>`
     background-image: url(${(props) => props.url});
     width: 200px;
     height: 200px;
@@ -108,7 +105,8 @@ function Summoner() {
         <SummonerContainer>
           <IconCover color={userState.leagueUserInfo.tier.toLowerCase()} style={{}}>
             <IconImage url={
-              theme.editions[userState.leagueUserInfo.summonerId]
+              theme.editions[userState.leagueUserInfo.summonerId].tier[
+                userState.leagueUserInfo.tier.toLowerCase()]
                 ? theme.editions[
                   userState.leagueUserInfo.summonerId].tier[
                   userState.leagueUserInfo.tier.toLowerCase()].profile
@@ -275,7 +273,6 @@ const AlgoContainer = styled.div`
 `;
 
 export default function Home() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userState = useSelector((state: RootState) => state.USER);
   const algoState = useSelector((state: RootState) => state.ALGORITHM);
@@ -288,10 +285,10 @@ export default function Home() {
     );
   }, [algoState]);
 
-  const algoChange = (e: string) => {
+  const algoChange = useCallback((e: string) => {
     dispatch(selectAlgorithm(e));
     window.api.send('dispatch', selectAlgorithm(e));
-  };
+  }, []);
 
   return (
     <Container>

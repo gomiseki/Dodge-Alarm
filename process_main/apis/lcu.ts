@@ -162,11 +162,12 @@ export default class LCU {
     return new Promise((resolve, reject) => {
       this.LCURequest('GET', LCU_ENDPOINT_PARTICIPANTS(chatRoom))
         .then((result: any) => {
-          if (result.length === 5) {
+          const { gameQueueType } = result[0].lol;
+          if (gameQueueType === 'RANKED_SOLO_5x5') {
             this.store.dispatch(setSummonerFeature(result));
             resolve(result);
           } else {
-            this.getParticipant(chatRoom).then(resolve).catch(reject);
+            reject();
           }
         })
         .catch(() => {

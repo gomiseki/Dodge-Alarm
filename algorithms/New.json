@@ -2,7 +2,7 @@
     "matchCount":0,
     "deathPerMatch":{
         "type":"AlgorithmNomal_type",
-        "maxScore":100,
+        "maxScore":10,
         "minScore":0,
         "ratio":0
     },
@@ -21,12 +21,6 @@
     "maxDeathPerCount":{
         "type":"AlgorithmDeath_type",
         "maxDeath":10,
-        "maxRatio":100,
-        "minRatio":0,
-        "ratio":0
-    },
-    "foreignLanguageRatio":{
-        "type":"AlgorithmRatio_type",
         "maxRatio":100,
         "minRatio":0,
         "ratio":0

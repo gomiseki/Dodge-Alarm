@@ -20,7 +20,7 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
               store.dispatch(setLeagueUser({
                 leagueId: 'c8b8e04e-d1c0-4837-a6dd-e291c2be1c94',
                 queueType: 'RANKED_SOLO_5x5',
-                tier: 'GRANDMASTER',
+                tier: 'GOLD',
                 rank: 'I',
                 summonerId: 'N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA',
                 summonerName: '강찬밥',
@@ -49,7 +49,7 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
       }
       break;
     case 'SET_SUMMONER_FEATURE':
-
+      console.log(action.payload)
       store.getState().ALGORITHM.forEach((algo:Algorithms_type) => {
         console.log('set summoner feature');
         if (algo.selected && algo.algoData.matchCount) {

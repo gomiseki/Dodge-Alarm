@@ -67,7 +67,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools({ mode: 'detach', activate: true });
 
   // attach overlay window
-  overlayWindow.attachTo(mainWindow, 'League of Legends');
+  overlayWindow.attachTo(mainWindow, '롤픽창 - 그림판');
   // '롤픽창 - 그림판', 'League of Legends'
 };
 

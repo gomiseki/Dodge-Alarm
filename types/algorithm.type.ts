@@ -1,24 +1,3 @@
-export interface Algorithms_type{
-    algoName:string,
-    algoData: Algorithm_type,
-    selected:boolean
-}
-
-export interface Algorithm_type{
-    [index: string]:any,
-    matchCount?:number,
-    deathPerMatch?:AlgorithmNomal_type|false,
-    KDAPerMatch?:AlgorithmNomal_type|false,
-    winRate?: AlgorithmRatio_type|false,
-    maxDeathPerCount?:AlgorithmDeath_type|false,
-    foreignLanguageRatio?:AlgorithmRatio_type|false,
-    positionRatio?: AlgorithmRatio_type|false,
-    champUseRatio?:AlgorithmRatio_type|false,
-    userLevel?:AlgorithmNomal_type|false,
-    isPrevSeason?:PrevSeason_type|false
-
-}
-
 export interface AlgorithmNomal_type{
     type:'AlgorithmNomal_type',
     maxScore:number,
@@ -46,40 +25,60 @@ export interface PrevSeason_type{
     ratio:number
 }
 
-export interface algoScoreType{
-    [index:string]:any,
-    deathPerMatch:scoreState,
-    KDAPerMatch:scoreState,
-    winRate:scoreState,
-    maxDeathPerCount:scoreState,
-    foreignLanguageRatio:scoreState,
-    positionRatio:scoreState,
-    champUseRatio:scoreState,
-    userLevel:scoreState,
-    isPrevSeason:scoreState,
-    essential?:essentialProps
+export interface Algorithm_type{
+    [index: string]:any,
+    matchCount:number,
+    deathPerMatch?:AlgorithmNomal_type|false,
+    KDAPerMatch?:AlgorithmNomal_type|false,
+    winRate?: AlgorithmRatio_type|false,
+    maxDeathPerCount?:AlgorithmDeath_type|false,
+    positionRatio?: AlgorithmRatio_type|false,
+    champUseRatio?:AlgorithmRatio_type|false,
+    userLevel?:AlgorithmNomal_type|false,
+    isPrevSeason?:PrevSeason_type|false
 }
+
+export interface Algorithms_type{
+    algoName:string,
+    algoData: Algorithm_type,
+    selected:boolean
+}
+
 export interface scoreState{
     score:number,
     state:string
 }
 
 export interface essentialProps{
-    쌩배?:{
+    [index:string]:any
+    쌩배:{
         prevTier?:string
         prevLeague?:string
         state?:boolean
         apiStatus:boolean
     },
-    포꼬?:{
+    포꼬:{
         positionRate:number[]
         state:boolean
     },
-    꼴픽?:{
+    꼴픽:{
         champUse:number
         champ:number
         state:boolean
     }
+}
+
+export interface algoScoreType{
+    [index:string]:any,
+    deathPerMatch:scoreState,
+    KDAPerMatch:scoreState,
+    winRate:scoreState,
+    maxDeathPerCount:scoreState,
+    positionRatio:scoreState,
+    champUseRatio:scoreState,
+    userLevel:scoreState,
+    isPrevSeason:scoreState,
+    essential?:essentialProps
 }
 
 export type AllAlgo_type =
@@ -93,7 +92,7 @@ export const initAlgo:Algorithm_type = {
   matchCount: 10,
   deathPerMatch: {
     type: 'AlgorithmNomal_type',
-    maxScore: 100,
+    maxScore: 10,
     minScore: 0,
     ratio: 0,
   },
@@ -112,12 +111,6 @@ export const initAlgo:Algorithm_type = {
   maxDeathPerCount: {
     type: 'AlgorithmDeath_type',
     maxDeath: 10,
-    maxRatio: 100,
-    minRatio: 0,
-    ratio: 0,
-  },
-  foreignLanguageRatio: {
-    type: 'AlgorithmRatio_type',
     maxRatio: 100,
     minRatio: 0,
     ratio: 0,
@@ -149,8 +142,10 @@ export const initAlgo:Algorithm_type = {
 export const AlgoPropsToDesc:{[index:string]:any} = {
   matchCount: {
     name: '분석 게임 수',
-    description: '유저의 최근 몇 경기 전적을 분석할 지 정합니다. 숫자가 높을 수록 속도가 저하될 수 있습니다.',
-    example: '',
+    description: `유저의 최근 몇 경기 전적을 
+분석할 지 정합니다.
+숫자가 높을 수록 
+속도가 저하될 수 있습니다.`,
     stateDescription: '',
   },
   deathPerMatch: {
@@ -173,15 +168,10 @@ export const AlgoPropsToDesc:{[index:string]:any} = {
   },
   maxDeathPerCount: {
     name: '경기 당 최대 데스 비율',
-    description: '분석 경기 중 설정한 데스 이상을 기록한 게임의 비율을 설정합니다.',
+    description: `분석 경기 중 기준 데스 이상을 기록한 
+게임의 비율을 설정합니다.`,
     example: '10데스 이상 기록한 게임의 비율이 50%이상인 유저를 경계한다면 최대 데스를 10에, 최대 비율을 50에 놓아보세요. 10데스 게임 비율이 50%가 넘는다면 만점처리되고, 최소비율이 30이라면 30%에서 만점처리됩니다.',
     stateDescription: '경기 당 최대 데스 비율',
-  },
-  foreignLanguageRatio: {
-    name: '닉네임 영어 비율',
-    description: '닉네임의 영어 비율을 분석합니다.',
-    example: '영어 비율이 외국인의 척도가 될 수는 없습니다. 참고만 하세요.(Hide on bush)',
-    stateDescription: '영어 비율',
   },
   positionRatio: {
     name: '포지션 숙련도',
@@ -203,7 +193,9 @@ export const AlgoPropsToDesc:{[index:string]:any} = {
   },
   isPrevSeason: {
     name: '쌩배',
-    description: '전 시즌 티어 존재 여부를 분석합니다.',
+    description: `전 시즌 티어 존재 여부를 분석합니다.
+자체 데이터센터가 없어 하자가 있는 
+기능입니다. ㅠㅠ`,
     example: '괴물쥐도 쌩배 시 챌린저 1000점 가능해.... - 중국트페장인',
     stateDescription: '전 시즌',
   },

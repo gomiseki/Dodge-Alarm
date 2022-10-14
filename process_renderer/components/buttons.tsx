@@ -1,15 +1,21 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { darken, lighten } from 'polished';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface ButtonProps extends React.ComponentProps<'button'>{
     children:React.ReactNode;
-    editionId?:string;
     color?:string;
     size?:string;
     title?:string;
     // eslint-disable-next-line no-unused-vars
     onClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+interface ExtendProps extends ButtonProps{
+  editionId:string;
 }
 
 interface SizeProps {
@@ -37,7 +43,7 @@ const sizeStyles = css`
     `}
 `;
 
-const Btn = styled.button<ButtonProps>`
+const Btn = styled.button<ExtendProps>`
     -webkit-app-region:no-drag;
     cursor: pointer;
     padding:0;
@@ -45,30 +51,39 @@ const Btn = styled.button<ButtonProps>`
     display:flex;
     justify-content: center;
     align-items: center ;
-    background-color:${(props) => (props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette[props.color ? props.color : 'themeMain'])};
+    background-color:${(props) => (
+    props.color !== 'themeMain' && props.color ? props.theme.palette[props.color]
+      : props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain
+        : props.theme.palette.themeMain
+  )};
     &:hover {
-        background-color: ${(props) => lighten(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette[props.color ? props.color : 'themeMain'])};
+        background-color: ${(props) => lighten(0.1, props.color !== 'themeMain' && props.color ? props.theme.palette[props.color]
+    : props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain
+      : props.theme.palette.themeMain)};
     }
     &:active {
-         background-color: ${(props) => darken(0.1, props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain : props.theme.palette[props.color ? props.color : 'themeMain'])};
+         background-color: ${(props) => darken(0.1, props.color !== 'themeMain' && props.color ? props.theme.palette[props.color]
+    : props.theme.editions[props.editionId] ? props.theme.editions[props.editionId].themeMain
+      : props.theme.palette.themeMain)};
     }
     ${sizeStyles};
 `;
 
 const defaultProps = {
   title: '',
-  editionId: '',
   color: 'themeMain',
   size: 'medium',
 };
 
 export default function Button({
-  children, editionId, color, size, onClick, title,
+  children, color, size, onClick, title, style,
 }:ButtonProps) {
+  const userState = useSelector((state: RootState) => state.USER);
   return (
     <Btn
+      style={style}
       title={title}
-      editionId={editionId}
+      editionId={userState.leagueUserInfo.summonerId}
       size={size}
       color={color}
       onClick={onClick}

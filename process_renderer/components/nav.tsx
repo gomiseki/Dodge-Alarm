@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { darken } from 'polished';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface LinkType {
   isActive: boolean,
@@ -65,13 +67,14 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     border-radius:5px 5px 0 0;
 `;
-export default function Nav({ editionId }:{editionId:string}) {
+export default function Nav() {
+  const userState = useSelector((state: RootState) => state.USER);
   const { pathname } = useLocation();
   return (
     <Container>
       <Ulist>
         {navData.map((data) => (
-          <List editionId={editionId} isActive={data.path === pathname}>
+          <List editionId={userState.leagueUserInfo.summonerId} isActive={data.path === pathname}>
             <StyledLink to={data.path}>{data.title}</StyledLink>
           </List>
         ))}

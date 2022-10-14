@@ -28,7 +28,8 @@ import riotAPiFetch from './middleware/riotApiFetch';
 
 import { PATCH_TO_CHAMP, GET_PATCH_VERSION } from '../consts/riotConsts';
 // eslint-disable-next-line no-unused-vars
-// import { exampleUserSet, exampleParticipants } from '../mock';
+import { exampleUserSet, exampleParticipants } from '../mock/mock.js';
+import {ingame} from '../mock/ingameNewMock.js';
 
 const rootReducer = combineReducers({
   ALGORITHM: Algorithm,
@@ -166,10 +167,10 @@ const configureStore = (ipc:mainProcess|rendererProcess) => {
           });
       });
     // for debugging
-    //   setTimeout(() => {
-    //       store.dispatch(setPickStatus(exampleUserSet.myTeam))
-    //       store.dispatch(setSummonerFeature(exampleParticipants));
-    //   }, 5000);
+    // setTimeout(() => {
+    //   store.dispatch(setPickStatus(exampleUserSet.myTeam));
+    //   store.dispatch(setSummonerFeature(ingame));
+    // }, 5000);
   }
   return store;
 };

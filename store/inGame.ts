@@ -1,6 +1,7 @@
 import { Team } from '../types/champSelect.type';
 import { Participant_type } from '../types/participant.type';
 import { ParticipantMatchData_type } from '../types/matchData.type';
+import { ingame } from '../mock/ingameNewMock.js';
 
 // 액션 타입 정의
 const SET_INGAME = 'SET_INGAME' as const;
@@ -10,7 +11,7 @@ const SET_SUMMONER_MATCH_DATA = 'SET_SUMMONER_MATCH_DATA' as const;
 const CLEAR_INGAME = 'CLEAR_INGAME' as const;
 
 export interface inGameDataType extends Team{
-  summonerMatchData?:ParticipantMatchData_type,
+  summonerMatchData:ParticipantMatchData_type,
 }
 
 // 액션 생섬함수 정의
@@ -33,15 +34,12 @@ ReturnType<typeof clearInGame>
 const inGameDataState:inGameDataType[]|[] = [];
 
 // **** 리듀서 작성
-export default function InGame(state = inGameDataState, action:userInfoAction):inGameDataType[]|[] {
+export default function InGame(state = ingame, action:userInfoAction):inGameDataType[]|[] {
   switch (action.type) {
     case SET_INGAME:
       return action.payload;
 
     case SET_PICK_STATUS:
-      if (!state) {
-        return action.payload;
-      }
       return action.payload.map((member, index) => (
         { ...state[index], ...member }
       ));

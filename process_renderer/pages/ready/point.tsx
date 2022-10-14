@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
-import Tooltip from './tooltip';
+import Tooltip from '../../components/tooltip';
 
 const PointContainer = styled.div`
     width:60px;
@@ -38,7 +38,7 @@ const defaultProps = {
   editionId: '',
 };
 
-const scoreScript = `100포인트를 모두 소모하여 
+const scoreScript = `반영비에 100포인트를 투자하여
 알고리즘을 만들어 주세요. 
 위험도가 높은 유저에게 
 높은 점수를 부여합니다.`;

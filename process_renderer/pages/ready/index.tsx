@@ -14,7 +14,7 @@ import Home from './home';
 import { RootState } from '../../../store';
 import theme from '../../styles/theme';
 import Algo from './algo';
-// import Info from './info';
+import Info from './info';
 
 const Container = styled.div<{editionId: string}>`
     width: 100%;
@@ -117,18 +117,18 @@ function Ready() {
             </EN>
           </Logo>
           <Icons>
-            <Button editionId={userState.leagueUserInfo.summonerId} onClick={minWindow}><AiOutlineMinus style={{ width: '20px', height: '20px' }} /></Button>
-            <Button editionId={userState.leagueUserInfo.summonerId} onClick={closeWindow}><AiOutlineClose style={{ width: '20px', height: '20px' }} /></Button>
+            <Button onClick={minWindow}><AiOutlineMinus style={{ width: '20px', height: '20px' }} /></Button>
+            <Button onClick={closeWindow}><AiOutlineClose style={{ width: '20px', height: '20px' }} /></Button>
           </Icons>
         </Title>
         <NavContainer>
-          <Nav editionId={userState.leagueUserInfo.summonerId} />
+          <Nav />
         </NavContainer>
         <Main editionId={userState.leagueUserInfo.summonerId}>
           <Routes>
             <Route path="" element={<Home />} />
             <Route path="algo" element={<Algo />} />
-            {/* <Route path="info" element={<Info />} /> */}
+            <Route path="info" element={<Info />} />
           </Routes>
         </Main>
         <Footer />

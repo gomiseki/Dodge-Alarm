@@ -52,7 +52,7 @@ const SelectItemContainer = styled.div<{type: string}>`
   position: absolute;
   width: 100%;
   background-color: white;
-  z-index: 1;
+  z-index: 999;
 
   -webkit-animation: 0.3s linear normal slide_down;
           animation: 0.3s linear normal slide_down;
@@ -90,7 +90,6 @@ const defaultProps = {
 type ISelectBoxProps = {
   options: string[] | number[];
   defaultValue: string;
-  selectedOption: string | number;
   width: string | number;
   requestFunc?: any;
   type?: string;
@@ -100,7 +99,6 @@ type ISelectBoxProps = {
 function SelectBox({
   options,
   defaultValue,
-  selectedOption,
   width,
   requestFunc,
   type,
@@ -108,7 +106,7 @@ function SelectBox({
 }: ISelectBoxProps) {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [clickSelectedBox, setClickSelectedBox] = useSelect(labelRef); // SelectBox가 클릭됐는지 여부 체크
-
+  const [selectedOption, setSelectedOption] = useState(defaultValue);
   // SelectBox 클릭 이벤트 핸들러
   const handleOpenSelectBox = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -118,8 +116,7 @@ function SelectBox({
   // requestFunc로 넘어온 API 요청 등을 여기서 처리
   const handleSelectItemClick = (e: any) => {
     const optionValue = e.target.value; // 선택한 option
-
-    // setSelectedOption(optionValue); // 선택된 Option Value 설정
+    setSelectedOption(optionValue); // 선택된 Option Value 설정
     setClickSelectedBox(false); // Option 선택하면 Select Box 닫기
     requestFunc(optionValue); // 선택된 Option을 인자로 요청 함수 실행
   };
@@ -143,9 +140,10 @@ function SelectBox({
         <SelectItemContainer type={type}>
           {options.map((option, i) => (
             <SelectItem
+              value={option}
+              onMouseDown={handleSelectItemClick}
               editionId={editionId}
               key={String(i) + option}
-              onClick={handleSelectItemClick}
               type={type}
             >
               {option}
