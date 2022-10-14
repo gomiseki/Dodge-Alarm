@@ -33,7 +33,7 @@ ReturnType<typeof clearInGame>
 const inGameDataState:inGameDataType[]|[] = [];
 
 // **** 리듀서 작성
-export default function InGame(state = ingame, action:userInfoAction):inGameDataType[]|[] {
+export default function InGame(state = inGameDataState, action:userInfoAction):inGameDataType[]|[] {
   switch (action.type) {
     case SET_INGAME:
       return action.payload;
