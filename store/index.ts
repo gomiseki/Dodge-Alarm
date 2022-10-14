@@ -13,7 +13,7 @@ import logger from 'redux-logger';
 import axios from 'axios';
 import Algorithm, { setAlgorithm } from './algorithm';
 import User from './user';
-import InGame, { setPickStatus, setSummonerFeature, inGameDataType } from './inGame';
+import InGame from './inGame';
 import GameAsset, { setGameAsset } from './gameAsset';
 
 import { Algorithm_type, Algorithms_type } from '../types/algorithm.type';
@@ -27,9 +27,6 @@ import processSync from './middleware/processSync';
 import riotAPiFetch from './middleware/riotApiFetch';
 
 import { PATCH_TO_CHAMP, GET_PATCH_VERSION } from '../consts/riotConsts';
-// eslint-disable-next-line no-unused-vars
-import { exampleUserSet, exampleParticipants } from '../mock/mock.js';
-import {ingame} from '../mock/ingameNewMock.js';
 
 const rootReducer = combineReducers({
   ALGORITHM: Algorithm,
@@ -166,6 +163,7 @@ const configureStore = (ipc:mainProcess|rendererProcess) => {
             store.dispatch(setGameAsset({ champIdToName: result.data }));
           });
       });
+
     // for debugging
     // setTimeout(() => {
     //   store.dispatch(setPickStatus(exampleUserSet.myTeam));

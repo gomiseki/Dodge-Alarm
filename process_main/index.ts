@@ -67,7 +67,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools({ mode: 'detach', activate: true });
 
   // attach overlay window
-  overlayWindow.attachTo(mainWindow, '롤픽창 - 그림판');
+  overlayWindow.attachTo(mainWindow, 'League of Legends');
   // '롤픽창 - 그림판', 'League of Legends'
 };
 
@@ -94,8 +94,10 @@ app.on('ready', async () => {
   });
 
   ipcMain.on('Open-Detail', (e, id) => {
-    if (readyWindow)readyWindow.loadURL(`${rendererEntry}/#/info?index=${id}`);
-    else (createReady(`/#/info?index=${id}`));
+    if (readyWindow) {
+      readyWindow.focus();
+      readyWindow.loadURL(`${rendererEntry}/#/info?index=${id}`);
+    } else (createReady(`/#/info?index=${id}`));
   });
 
   // init status

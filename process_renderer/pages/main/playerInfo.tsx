@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineRead } from 'react-icons/ai';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -59,19 +59,30 @@ const ScoreBlock = styled.div<{total:number, picked:boolean}>`
     transition: left 0.5s linear ;
 `;
 
-const Button = styled.div`
+const Button = styled.div<{mouseOver:boolean}>`
   position: absolute;
   width: 56px;
   height: 56px;
   border-radius: 30px;
-  background-color: black;
+  background-color: ${({ mouseOver }) => (mouseOver ? 'black' : 'transperant')};
   margin-left: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 50%;
+  z-index: 9999;
 `;
 
 function InfoButton({ onClick }:{onClick:any}) {
+  const [mouseOver, setMouseOver] = useState(false);
   return (
-    <Button onClick={onClick}>
-      <AiOutlineRead />
+    <Button
+      onClick={onClick}
+      mouseOver={mouseOver}
+      onMouseOver={() => { setMouseOver(true); }}
+      onMouseOut={() => { setMouseOver(false); }}
+    >
+      {mouseOver && <AiOutlineRead style={{ color: 'white', width: '60%', height: '60%' }} />}
     </Button>
   );
 }
@@ -110,7 +121,7 @@ function UserState({ essential, total, mycell }:
           default:
             return null;
         }
-        return key;
+        return null;
       })}
     </UserStateContainer>
   );

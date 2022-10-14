@@ -11,9 +11,6 @@ import useIngame from '../../hooks/useInGame';
 const Container = styled.div`
   width: 320px;
   height: 495px;
-  position: absolute;
-  left: 5px;
-  top:158px;
 `;
 // for debugging
 // width: 320px;
@@ -59,8 +56,7 @@ const LogoSpan = styled.div`
 
 export default function Main() {
   const inGameData = useSelector((state: RootState) => state.INGAME, shallowEqual);
-  // const pickPhase = useSelector((state: RootState) => state.GAMEASSET.pickPhase, shallowEqual);
-  const pickPhase = [true, true, true, true, true, true, true, true, true, true]
+  const pickPhase = useSelector((state: RootState) => state.GAMEASSET.pickPhase, shallowEqual);
   useIngame();
 
   const onClick = () => {

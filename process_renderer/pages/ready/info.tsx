@@ -443,12 +443,16 @@ function PlayerDetail({ data, score }:
   };
 
   useEffect(() => {
-    if (score.essential && data) {
-      setWinRate(getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match));
-      setPositionProf(getSortedPositionIndex(score.essential.포꼬.positionRate));
-      setChampProf(
-        getSortedChampIndex(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
-      );
+    if (score) {
+      if (score.essential && data) {
+        setWinRate(
+          getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match)
+        );
+        setPositionProf(getSortedPositionIndex(score.essential.포꼬.positionRate));
+        setChampProf(
+          getSortedChampIndex(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
+        );
+      }
     }
   }, [data, score]);
 

@@ -1,7 +1,6 @@
 import { Team } from '../types/champSelect.type';
 import { Participant_type } from '../types/participant.type';
 import { ParticipantMatchData_type } from '../types/matchData.type';
-import { ingame } from '../mock/ingameNewMock.js';
 
 // 액션 타입 정의
 const SET_INGAME = 'SET_INGAME' as const;
