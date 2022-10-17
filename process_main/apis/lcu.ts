@@ -83,7 +83,8 @@ export default class LCU {
             } else if (pickData.chatDetails.chatRoomName === '' && this.isPick) {
               this.isPick = false;
               this.store.dispatch(setClientState(false));
-            } else if (pickData.timer.phase === 'PLANNING') {
+            } else {
+              if (pickData.timer.phase === 'PLANNING') {
               this.store.dispatch(
                 setClientState(
                   [false, false, false, false, false, false, false, false, false, false],
