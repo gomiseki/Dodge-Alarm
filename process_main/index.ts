@@ -42,7 +42,6 @@ const createReady = (url = '/'):void => {
     },
   });
   readyWindow.loadURL(rendererEntry + url);
-  readyWindow.webContents.openDevTools({ mode: 'detach' });
 
   readyWindow.on('closed', () => {
     readyWindow = null;
@@ -65,17 +64,13 @@ const createWindow = async () => {
   // and load the index.html of the app.
   mainWindow.loadURL(path.join(rendererEntry, '/main_window'));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools({ mode: 'detach', activate: true });
-
   // attach overlay window
   overlayWindow.attachTo(mainWindow, 'League of Legends');
-  // '롤픽창 - 그림판', 'League of Legends'
 };
 
 app.on('ready', async () => {
   // install devtools
-  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
 
   ipcMain.on('Ready-Window', () => {
     if (readyWindow)readyWindow.focus();
