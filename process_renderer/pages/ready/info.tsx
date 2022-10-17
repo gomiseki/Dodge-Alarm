@@ -150,7 +150,7 @@ function Player({ data, score }: { data: inGameDataType, score: algoScoreType })
     (data.summonerMatchData.player && data.summonerMatchData.playerAPI && score)
       ? (
         <PlayerContainer to={`?index=${data.cellId % 5}`} cell={data.cellId % 5}>
-          <IconCircle size="60px" total={total} position={data.assignedPosition} pick={data.championId || data.championPickIntent} />
+          <IconCircle size="60px" total={total} position={data.assignedPosition} pick={data.championId} />
           <Score total={total}>{`SCORE: ${total.toFixed(0)}`}</Score>
           <UserDescription>
             <p style={{
