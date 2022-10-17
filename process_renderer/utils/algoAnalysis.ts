@@ -174,7 +174,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
                 }
               }
             });
-            algoScore.maxDeathPerCount.state = `${(<AlgorithmDeath_type>algoData[e]).maxDeath}데스 경기 : ${algoScore.maxDeathPerCount.score}회 / ${inGameData.summonerMatchData.match.length} game`;
+            algoScore.maxDeathPerCount.state = `${(<AlgorithmDeath_type>algoData[e]).maxDeath}데스 경기 : ${algoScore.maxDeathPerCount.score}회 / ${inGameData.summonerMatchData.match!.length} game`;
             algoScore.maxDeathPerCount.score /= inGameData.summonerMatchData.match!.length;
             algoScore.maxDeathPerCount.score *= 100;
             break;
@@ -210,7 +210,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
                   }
                 }
               });
-              algoScore.champUseRatio.state = `챔피언 사용 : ${algoScore.champUseRatio.score}회 / ${inGameData.summonerMatchData.match.length} game `;
+              algoScore.champUseRatio.state = `챔피언 사용 : ${algoScore.champUseRatio.score}회 / ${inGameData.summonerMatchData.match!.length} game `;
               algoScore.champUseRatio.score /= inGameData.summonerMatchData.match!.length;
               algoScore.champUseRatio.score *= 100;
             } else {
