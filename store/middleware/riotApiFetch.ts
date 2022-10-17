@@ -17,22 +17,7 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
           store.dispatch(setUserApiStatus({ summoner: true }));
           RiotConnection.getLeague(data.id)
             .then((entry) => {
-              store.dispatch(setLeagueUser({
-                leagueId: 'c8b8e04e-d1c0-4837-a6dd-e291c2be1c94',
-                queueType: 'RANKED_SOLO_5x5',
-                tier: 'GOLD',
-                rank: 'I',
-                summonerId: 'N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA',
-                summonerName: '강찬밥',
-                leaguePoints: 33,
-                wins: 600,
-                losses: 585,
-                veteran: false,
-                inactive: false,
-                freshBlood: true,
-                hotStreak: false,
-              }));
-              // store.dispatch(setLeagueUser(entry));
+              store.dispatch(setLeagueUser(entry));
               store.dispatch(setUserApiStatus({ league: true }));
             })
             .catch(() => {
@@ -50,7 +35,6 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
       break;
     case 'SET_SUMMONER_FEATURE':
       store.getState().ALGORITHM.forEach((algo:Algorithms_type) => {
-        console.log('set summoner feature');
         if (algo.selected && algo.algoData.matchCount) {
           RiotConnection.playerToHistory(action.payload, algo.algoData.matchCount)
             .then((data) => {
@@ -59,7 +43,6 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
                 store.getState().INGAME.forEach((element:inGameDataType) => {
                   order.push(element.summonerId);
                 });
-                console.log(order);
                 data.sort((a:ParticipantMatchData_type, b:ParticipantMatchData_type) => {
                   const aorder = order.indexOf(a.player?.summonerId ? a.player.summonerId : 0);
                   const border = order.indexOf(b.player?.summonerId ? b.player.summonerId : 0);

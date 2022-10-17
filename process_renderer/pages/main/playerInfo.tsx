@@ -105,7 +105,6 @@ function InfoButton({ onClick }:{onClick:any}) {
 
 function UserState({ essential, total, mycell }:
     {essential:essentialProps|undefined, total:number, mycell:boolean}) {
-  console.log(mycell);
   return (
     <UserStateContainer>
       {mycell && total > 80

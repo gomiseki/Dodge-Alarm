@@ -114,7 +114,6 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
       state: '',
     },
   };
-  console.log(algoData);
   // 알고리즘 스코어 계산
   if (typeof algoData !== 'boolean') {
     Object.keys(algoData).forEach((e) => {
@@ -148,7 +147,6 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
             break;
           }
           case 'winRate': {
-            console.log(algoScore);
             inGameData.summonerMatchData.match.forEach((game) => {
               for (const participant of game.matchData.info.participants) {
                 if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
@@ -248,7 +246,6 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
       }
     });
   }
-  console.log(algoScore);
   // essentialProps(쌩배,포꼬,꼴픽) 계산
   algoScore.essential = {
     쌩배: {

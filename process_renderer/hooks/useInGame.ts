@@ -8,7 +8,6 @@ import { RootState } from '../../store';
 import algoAnalysis from '../utils/algoAnalysis';
 
 export default function useIngame() {
-  console.log('score');
   const getSelected = useCallback((algorithm:Algorithms_type[]) => {
     let selected:Algorithm_type|false = false;
     algorithm.forEach((element) => {
@@ -37,13 +36,11 @@ export default function useIngame() {
 
   useEffect(() => {
     if (algorithm && inGameData.length) {
-      console.log(algorithm, inGameData);
       setAlgorithmScore(() => getParticipantScore(algorithm, inGameData));
     }
   }, [algorithm, inGameData]);
 
   useEffect(() => {
-    console.log(algorithmScore);
     window.api.send('dispatch', { type: 'SET_INGAMESCORE', payload: algorithmScore });
   }, [algorithmScore]);
 

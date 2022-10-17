@@ -143,7 +143,6 @@ function Player({ data, score }: { data: inGameDataType, score: algoScoreType })
     if (score) {
       setTotal(getScore(score));
     }
-    console.log(total);
   }, [score]);
 
   return (
@@ -284,7 +283,6 @@ const KDABlock = styled.div<{ win: boolean }>`
 function EssentialState({
   dataKey, data, position, match,
 }: { dataKey: string, data: any, position: string, match: number }) {
-  console.log(dataKey);
   if (dataKey === '쌩배') {
     return (
       <EssentialStateContainer>
@@ -315,7 +313,6 @@ function EssentialState({
     );
   }
   if (dataKey === '포꼬') {
-    console.log(data.positionRate, positionList.findIndex((v) => v === position));
     return (
       <EssentialStateContainer>
         포지션
@@ -406,7 +403,6 @@ function PlayerDetail({ data, score }:
       sorted.push({ position: positionList[i], prof: v });
     });
     sorted.sort((a, b) => b.prof - a.prof);
-    console.log(sorted);
     return sorted;
   };
   const getSortedChampIndex = (name: string, arr: Match[]) => {
@@ -424,7 +420,6 @@ function PlayerDetail({ data, score }:
       }
     });
     sorted.sort((a, b) => b.prof - a.prof);
-    console.log(sorted);
     return sorted;
   };
   const getWinRate = (name: string, arr: Match[]) => {
@@ -438,7 +433,6 @@ function PlayerDetail({ data, score }:
       }
     });
     rate = ((win / (lose + win)) * 100).toFixed(1);
-    console.log(win, lose, rate);
     return [win, lose, rate];
   };
 
@@ -710,7 +704,6 @@ export default function Info() {
   const inGameScore = useSelector((state: RootState) => state.INGAMESCORE);
 
   if (!(index)) {
-    console.log(index);
     return (
       <Container>
         {inGameData.length && inGameScore.length

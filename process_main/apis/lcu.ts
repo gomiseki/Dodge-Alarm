@@ -41,9 +41,7 @@ export default class LCU {
     LCU.closeReady();
     this.lolClientConnection = new LeagueClient(credentials);
     this.lolClientCredentials = credentials;
-    console.log('Client Connected');
     this.lolClientConnection.on('connect', (newCredentials) => {
-      console.log('Client Connected');
       LCU.closeReady();
       this.lolClientConnection = new LeagueClient(newCredentials);
       this.lolClientCredentials = newCredentials;
@@ -51,7 +49,6 @@ export default class LCU {
     });
 
     this.lolClientConnection.on('disconnect', () => {
-      console.log('Client Disconnected');
       readyWindow();
       this.store.dispatch(clearUser());
     });
@@ -59,53 +56,6 @@ export default class LCU {
     this.lolClientConnection.start();
     this.setUser();
   }
-
-  // async setWebSocket(lolClientCredentials:Credentials) {
-  //   return new Promise((resolve, reject) => {
-  //     connect(lolClientCredentials)
-  //       .then(async (result) => {
-  //         this.lolWebSocket = result;
-
-  //         this.LCURequest('GET', LCU_ENDPOINT_CHAMP_SELECT)
-  //           .then((result) => {
-  //             this.isPick = true;
-  //             const chatRoom = `${result.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
-  //             this.getParticipant(chatRoom);
-  //           })
-  //           .catch((error) => {
-  //             this.isPick = false;
-  //           });
-
-  //         this.lolWebSocket.subscribe(LCU_ENDPOINT_CHAMP_SELECT, async (pickData, e) => {
-  //           pickData.myTeam.length ? this.store.dispatch(setPickStatus(pickData.myTeam)) : null;
-  //           if (pickData.chatDetails.chatRoomName !== '' && !this.isPick) {
-  //             console.log('pickStart');
-  //             this.isPick = true;
-  //             const chatRoom = `${pickData.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
-  //             await this.getParticipant(chatRoom);
-  //           } else if (pickData.chatDetails.chatRoomName == '' && this.isPick) {
-  //             this.isPick = false;
-  //             this.store.dispatch(setClientState(false));
-  //           } else {
-  //             console.log(pickData.timer.phase);
-  //             if (pickData.timer.phase == 'PLANNING') {
-  //               this.store.dispatch(setClientState([false, false, false, false, false, false, false, false, false, false]));
-  //             } else {
-  //               const pickPhase = await this.getPhase(pickData.actions);
-  //               this.store.dispatch(setClientState(pickPhase));
-  //             }
-  //           }
-  //         });
-  //         console.log('Socket-Connected');
-  //       })
-  //       .catch((error) => {
-  //         console.log('Socket-Connection-Rejected');
-  //         setTimeout(() => {
-  //           this.setWebSocket(lolClientCredentials).then(resolve).catch(reject);
-  //         }, 1000);
-  //       });
-  //   });
-  // }
 
   async setWebSocket(lolClientCredentials:Credentials) {
     return new Promise((resolve, reject) => {
@@ -127,31 +77,25 @@ export default class LCU {
           this.lolWebSocket.subscribe(LCU_ENDPOINT_CHAMP_SELECT, async (pickData) => {
             if (pickData.myTeam.length) this.store.dispatch(setPickStatus(pickData.myTeam));
             if (pickData.chatDetails.chatRoomName !== '' && !this.isPick) {
-              console.log('pickStart');
               this.isPick = true;
               const chatRoom = `${pickData.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
               await this.getParticipant(chatRoom);
             } else if (pickData.chatDetails.chatRoomName === '' && this.isPick) {
               this.isPick = false;
               this.store.dispatch(setClientState(false));
+            } else if (pickData.timer.phase === 'PLANNING') {
+              this.store.dispatch(
+                setClientState(
+                  [false, false, false, false, false, false, false, false, false, false],
+                ),
+              );
             } else {
-              console.log(pickData.timer.phase);
-              if (pickData.timer.phase === 'PLANNING') {
-                this.store.dispatch(
-                  setClientState(
-                    [false, false, false, false, false, false, false, false, false, false],
-                  ),
-                );
-              } else {
-                const pickPhase = await LCU.getPhase(pickData.actions);
-                this.store.dispatch(setClientState(pickPhase));
-              }
+              const pickPhase = await LCU.getPhase(pickData.actions);
+              this.store.dispatch(setClientState(pickPhase));
             }
           });
-          console.log('Socket-Connected');
         })
-        .catch((error) => {
-          console.log('Socket-Connection-Rejected', error);
+        .catch(() => {
           setTimeout(() => {
             this.setWebSocket(lolClientCredentials).then(resolve).catch(reject);
           }, 1000);
@@ -184,13 +128,11 @@ export default class LCU {
     return new Promise((resolve, reject) => {
       this.LCURequest('GET', LCU_ENDPOINT_USER_STATUS)
         .then((result: any) => {
-          console.log('Set-User-completed');
           this.userInfo = result;
           this.store.dispatch(setLocalUser(result));
           this.setWebSocket(this.lolClientCredentials);
         })
-        .catch((error) => {
-          console.log('Set-User-Rejected', error);
+        .catch(() => {
           setTimeout(() => {
             this.setUser().then(resolve).catch(reject);
           }, 1000);

@@ -93,7 +93,6 @@ const closeWindow = () => {
 
 function Ready() {
   const userState = useSelector((state: RootState) => state.USER);
-  console.log(userState.apiStatus.league, userState.leagueUserInfo.summonerId, theme);
   return (
     <HashRouter>
       <Container editionId={userState.leagueUserInfo.summonerId}>

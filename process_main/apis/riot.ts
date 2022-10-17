@@ -17,17 +17,11 @@ import { ParticipantMatchData_type, Match } from '../../types/matchData.type';
 import { userInfoAPI_type, userLeague_type } from '../../types/userInfo.type';
 
 export default class RiotAPI {
-  constructor() {
-    console.log('riotAPI-inst-set');
-  }
-
   async getSummoner(userName:string):Promise<userInfoAPI_type> {
     try {
       const userData = await RiotAPI.callAPI(GET_SUMMONER_BY_NAME, userName, '?');
-      console.log('summoner-api-fetched');
       return userData.data;
     } catch (error) {
-      console.log(error);
       throw new Error('SUMMONER_API_rejected');
     }
   }
@@ -36,10 +30,8 @@ export default class RiotAPI {
     try {
       const userData = await RiotAPI.callAPI(GET_ENTRIES_BY_ID, id, '?');
       const userSoloData = userData.data.find((v:userLeague_type) => v.queueType === 'RANKED_SOLO_5x5');
-      console.log('league-api-fetched');
       return userSoloData;
     } catch (error) {
-      console.log(error);
       throw new Error('LEAGUE_API_rejected');
     }
   }
@@ -76,7 +68,6 @@ export default class RiotAPI {
 
   static async callAPI(endpoint:string, data:string, orAnd:string, asia = false) {
     const URL = encodeURI(`${asia ? RIOT_API_URL_ASIA : RIOT_API_URL}${endpoint}${data}${orAnd}api_key=${import.meta.env.VITE_RIOT_API_KEY}`);
-    console.log(URL);
     const result = await axios.get(URL).catch((e) => { throw new Error(data + e); });
     return result;
   }

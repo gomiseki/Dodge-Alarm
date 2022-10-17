@@ -218,7 +218,6 @@ export default function Algo() {
 
   // 알고리즘 변경
   const algoChange = (e: string) => {
-    console.log(e);
     dispatch(selectAlgorithm(e));
     window.api.send('dispatch', selectAlgorithm(e));
   };
@@ -301,10 +300,6 @@ export default function Algo() {
       originProps.current = objDeepCopy({}, getSelectedAlgo(algoState).algoData);
     }
   }, [algoState]);
-
-  useEffect(() => {
-    console.log(algoData);
-  }, [algoData]);
 
   return (
     <Continer>

@@ -151,7 +151,6 @@ const configureStore = (ipc:mainProcess|rendererProcess) => {
     // setAlgorithm
     const algoInitData = getAlgoInfo(ipc.fs.readDir(ipc.fs.algoPath), ipc.fs.algoPath, ipc.fs.readFile).filter((name) => name !== 'New');
     algoInitData[0].selected = true;
-    console.log(algoInitData);
     store.dispatch(setAlgorithm(algoInitData));
 
     // setGameAsset
@@ -163,12 +162,6 @@ const configureStore = (ipc:mainProcess|rendererProcess) => {
             store.dispatch(setGameAsset({ champIdToName: result.data }));
           });
       });
-
-    // for debugging
-    // setTimeout(() => {
-    //   store.dispatch(setPickStatus(exampleUserSet.myTeam));
-    //   store.dispatch(setSummonerFeature(ingame));
-    // }, 5000);
   }
   return store;
 };
