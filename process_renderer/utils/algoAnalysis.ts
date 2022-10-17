@@ -121,52 +121,52 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
       if (e !== 'matchCount' && algoData[e] !== false) {
         switch (e) {
           case 'deathPerMatch': {
-            inGameData.summonerMatchData.match.forEach((game) => {
-              for (const participant of game.matchData.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+            inGameData.summonerMatchData.match?.forEach((game) => {
+              for (const participant of game.matchData!.info.participants) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                   algoScore.deathPerMatch.score += participant.deaths;
                   break;
                 }
               }
             });
-            algoScore.deathPerMatch.score /= inGameData.summonerMatchData.match.length;
-            algoScore.deathPerMatch.state = `평균 데스 : ${algoScore.deathPerMatch.score} / ${inGameData.summonerMatchData.match.length} game`;
+            algoScore.deathPerMatch.score /= inGameData.summonerMatchData.match!.length;
+            algoScore.deathPerMatch.state = `평균 데스 : ${algoScore.deathPerMatch.score} / ${inGameData.summonerMatchData.match?.length} game`;
             break;
           }
           case 'KDAPerMatch': {
-            inGameData.summonerMatchData.match.forEach((game) => {
-              for (const participant of game.matchData.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+            inGameData.summonerMatchData.match?.forEach((game) => {
+              for (const participant of game.matchData!.info.participants) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                   algoScore.KDAPerMatch.score
                 += (participant.kills + participant.assists) / participant.deaths;
                   break;
                 }
               }
             });
-            algoScore.KDAPerMatch.score /= inGameData.summonerMatchData.match.length;
-            algoScore.KDAPerMatch.state = `평균 KDA : ${algoScore.KDAPerMatch.score} / ${inGameData.summonerMatchData.match.length} game`;
+            algoScore.KDAPerMatch.score /= inGameData.summonerMatchData.match!.length;
+            algoScore.KDAPerMatch.state = `평균 KDA : ${algoScore.KDAPerMatch.score} / ${inGameData.summonerMatchData.match!.length} game`;
             break;
           }
           case 'winRate': {
             console.log(algoScore);
-            inGameData.summonerMatchData.match.forEach((game) => {
-              for (const participant of game.matchData.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+            inGameData.summonerMatchData.match?.forEach((game) => {
+              for (const participant of game.matchData!.info.participants) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                   if (participant.win)algoScore.winRate.score += 1;
                   break;
                 }
               }
             });
 
-            algoScore.winRate.score /= inGameData.summonerMatchData.match.length;
+            algoScore.winRate.score /= inGameData.summonerMatchData.match!.length;
             algoScore.winRate.score *= 100;
             algoScore.winRate.state = `최근 승률 : ${algoScore.winRate.score}%`;
             break;
           }
           case 'maxDeathPerCount': {
-            inGameData.summonerMatchData.match.forEach((game) => {
-              for (const participant of game.matchData.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+            inGameData.summonerMatchData.match?.forEach((game) => {
+              for (const participant of game.matchData!.info.participants) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                   if (participant.deaths > (<AlgorithmDeath_type>algoData[e]).maxDeath) {
                     algoScore.maxDeathPerCount.score += 1;
                   }
@@ -175,14 +175,14 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
               }
             });
             algoScore.maxDeathPerCount.state = `${(<AlgorithmDeath_type>algoData[e]).maxDeath}데스 경기 : ${algoScore.maxDeathPerCount.score}회 / ${inGameData.summonerMatchData.match.length} game`;
-            algoScore.maxDeathPerCount.score /= inGameData.summonerMatchData.match.length;
+            algoScore.maxDeathPerCount.score /= inGameData.summonerMatchData.match!.length;
             algoScore.maxDeathPerCount.score *= 100;
             break;
           }
           case 'positionRatio': {
-            inGameData.summonerMatchData.match.forEach((game) => {
-              for (const participant of game.matchData.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+            inGameData.summonerMatchData.match?.forEach((game) => {
+              for (const participant of game.matchData!.info.participants) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                   if (participant.individualPosition.toLowerCase()
                   === inGameData.assignedPosition) {
                     algoScore.positionRatio.score += 1;
@@ -191,8 +191,8 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
                 }
               }
             });
-            algoScore.positionRatio.state = `포지션 배정 : ${algoScore.positionRatio.score}회 / ${inGameData.summonerMatchData.match.length} game `;
-            algoScore.positionRatio.score /= inGameData.summonerMatchData.match.length;
+            algoScore.positionRatio.state = `포지션 배정 : ${algoScore.positionRatio.score}회 / ${inGameData.summonerMatchData.match!.length} game `;
+            algoScore.positionRatio.score /= inGameData.summonerMatchData.match!.length;
             algoScore.positionRatio.score *= 100;
             break;
           }
@@ -202,16 +202,16 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
               champ = inGameData.championId;
             }
             if (champ) {
-              inGameData.summonerMatchData.match.forEach((game) => {
-                for (const participant of game.matchData.info.participants) {
-                  if (participant.summonerName === inGameData.summonerMatchData.player.gameName) {
+              inGameData.summonerMatchData.match?.forEach((game) => {
+                for (const participant of game.matchData!.info.participants) {
+                  if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
                     if (champ === participant.championId)algoScore.champUseRatio.score += 1;
                     break;
                   }
                 }
               });
               algoScore.champUseRatio.state = `챔피언 사용 : ${algoScore.champUseRatio.score}회 / ${inGameData.summonerMatchData.match.length} game `;
-              algoScore.champUseRatio.score /= inGameData.summonerMatchData.match.length;
+              algoScore.champUseRatio.score /= inGameData.summonerMatchData.match!.length;
               algoScore.champUseRatio.score *= 100;
             } else {
               algoScore.champUseRatio.score = 100;
@@ -219,15 +219,16 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
             break;
           }
           case 'userLevel': {
-            algoScore.userLevel.score = parseInt(inGameData.summonerMatchData.player.lol.level, 10);
+            // eslint-disable-next-line max-len
+            algoScore.userLevel.score = parseInt(inGameData.summonerMatchData.player!.lol.level!, 10);
             algoScore.userLevel.state = `유저 레벨 : ${algoScore.userLevel.score}`;
             break;
           }
           case 'isPrevSeason': {
             const tierList = ['CHALLENGER', 'GRANDMASTER', 'MASTER', 'DIAMOND', 'PLATINUM', 'GOLD', 'SILVER', 'BRONZE', 'IRON'];
-            if (('rankedPrevSeasonTier' in inGameData.summonerMatchData.player.lol)) {
+            if (('rankedPrevSeasonTier' in inGameData.summonerMatchData.player!.lol)) {
               if (
-                (tierList.includes(inGameData.summonerMatchData.player.lol.rankedPrevSeasonTier))
+                (tierList.includes(inGameData.summonerMatchData.player!.lol.rankedPrevSeasonTier))
               ) {
                 algoScore.isPrevSeason.score = 1;
                 algoScore.isPrevSeason.state = ' :전 시즌 기록 있음';
@@ -266,21 +267,21 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
   };
   const positionList = ['top', 'jungle', 'middle', 'bottom', 'utility'];
   const tierList = ['CHALLENGER', 'GRANDMASTER', 'MASTER', 'DIAMOND', 'PLATINUM', 'GOLD', 'SILVER', 'BRONZE', 'IRON'];
-  if (('rankedPrevSeasonTier' in inGameData.summonerMatchData.player.lol)) {
+  if (('rankedPrevSeasonTier' in inGameData.summonerMatchData.player!.lol)) {
     algoScore.essential.쌩배 = {
-      prevTier: inGameData.summonerMatchData.player.lol.rankedPrevSeasonTier,
-      prevLeague: inGameData.summonerMatchData.player.lol.rankedPrevSeasonDivision,
+      prevTier: inGameData.summonerMatchData.player!.lol.rankedPrevSeasonTier,
+      prevLeague: inGameData.summonerMatchData.player!.lol.rankedPrevSeasonDivision,
       apiStatus: true,
     };
-    if (!(tierList.includes(inGameData.summonerMatchData.player.lol.rankedPrevSeasonTier))) {
+    if (!(tierList.includes(inGameData.summonerMatchData.player!.lol.rankedPrevSeasonTier))) {
       algoScore.essential.쌩배.state = true;
     } else {
       algoScore.essential.쌩배.state = false;
     }
   }
-  inGameData.summonerMatchData.match.forEach((game) => {
-    for (const participant of game.matchData.info.participants) {
-      if (participant.summonerName === inGameData.summonerMatchData.player.gameName
+  inGameData.summonerMatchData.match?.forEach((game) => {
+    for (const participant of game.matchData!.info.participants) {
+      if (participant.summonerName === inGameData.summonerMatchData.player!.gameName
         && algoScore.essential) {
         if (inGameData.championId === participant.championId) {
           algoScore.essential.꼴픽.champUse += 1;
