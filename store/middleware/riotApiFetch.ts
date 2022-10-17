@@ -17,22 +17,22 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
           store.dispatch(setUserApiStatus({ summoner: true }));
           RiotConnection.getLeague(data.id)
             .then((entry) => {
-              store.dispatch(setLeagueUser({
-                leagueId: 'c8b8e04e-d1c0-4837-a6dd-e291c2be1c94',
-                queueType: 'RANKED_SOLO_5x5',
-                tier: 'GOLD',
-                rank: 'I',
-                summonerId: 'N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA',
-                summonerName: '강찬밥',
-                leaguePoints: 33,
-                wins: 600,
-                losses: 585,
-                veteran: false,
-                inactive: false,
-                freshBlood: true,
-                hotStreak: false,
-              }));
-              // store.dispatch(setLeagueUser(entry));
+              // store.dispatch(setLeagueUser({
+              //   leagueId: 'c8b8e04e-d1c0-4837-a6dd-e291c2be1c94',
+              //   queueType: 'RANKED_SOLO_5x5',
+              //   tier: 'GOLD',
+              //   rank: 'I',
+              //   summonerId: 'N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA',
+              //   summonerName: '강찬밥',
+              //   leaguePoints: 33,
+              //   wins: 600,
+              //   losses: 585,
+              //   veteran: false,
+              //   inactive: false,
+              //   freshBlood: true,
+              //   hotStreak: false,
+              // }));
+              store.dispatch(setLeagueUser(entry));
               store.dispatch(setUserApiStatus({ league: true }));
             })
             .catch(() => {

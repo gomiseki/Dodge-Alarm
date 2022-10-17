@@ -106,11 +106,11 @@ function Summoner() {
         <SummonerContainer>
           <IconCover color={userState.leagueUserInfo.tier.toLowerCase()} style={{}}>
             <IconImage url={
-              theme.editions[userState.leagueUserInfo.summonerId].tier[
-                userState.leagueUserInfo.tier.toLowerCase()]
-                ? theme.editions[
-                  userState.leagueUserInfo.summonerId].tier[
-                  userState.leagueUserInfo.tier.toLowerCase()].profile
+              theme.editions[userState.leagueUserInfo.summonerId]
+                ?.tier[userState.leagueUserInfo.tier.toLowerCase()]
+                ? theme.editions[userState.leagueUserInfo.summonerId]
+                  .tier[userState.leagueUserInfo.tier.toLowerCase()]
+                  .profile
                 : PROFILE_ICON(version, userState.localUserInfo.profileIconId)
               }
             />
