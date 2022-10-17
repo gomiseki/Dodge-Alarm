@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -28,7 +28,7 @@ const Top = styled.div`
   justify-content: space-between;
 `;
 
-const Pick = styled.div`
+const Pick = styled.div<{fold:boolean}>`
     display: flex;
     flex-direction: column;
     height: 400px;
@@ -56,20 +56,26 @@ const LogoSpan = styled.div`
 
 export default function Main() {
   const inGameData = useSelector((state: RootState) => state.INGAME, shallowEqual);
+  const fold = useSelector((state: RootState) => state.GAMEASSET.fold, shallowEqual);
   const pickPhase = useSelector((state: RootState) => state.GAMEASSET.pickPhase, shallowEqual);
+
   useIngame();
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     window.api.send('Ready-Window');
-  };
+  }, []);
 
   return (
     <Container>
       <Top>
-        <Logo><LogoSpan onClick={onClick}>Powerd by 너 쌩배지 v1</LogoSpan></Logo>
+        <Logo>
+          <LogoSpan onClick={onClick}>Powerd by 너 쌩배지 v1</LogoSpan>
+        </Logo>
         {(pickPhase && inGameData) && <State />}
       </Top>
-      <Pick>
+      {!fold
+      && (
+      <Pick fold={fold === undefined ? true : fold}>
         {
           pickPhase && inGameData.map((member) => (
             <PlayerInfo
@@ -80,6 +86,7 @@ export default function Main() {
           ))
         }
       </Pick>
+      )}
     </Container>
   );
 }

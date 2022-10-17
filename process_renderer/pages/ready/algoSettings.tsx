@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Number from '../../components/numberInput';
-import { AlgorithmNomal_type, Algorithm_type, AllAlgo_type } from '../../../types/algorithm.type';
 import RangeInput from '../../components/rangeInput';
 
 interface algopSettingProps {
@@ -36,7 +35,6 @@ const SetCol = styled.div`
 export default function AlgoSetting({
   score, algoProps, algoKey, onChange,
 }: algopSettingProps) {
-  console.log(score, algoProps);
   if (typeof algoProps !== 'number') {
     switch (algoKey) {
       case 'deathPerMatch':

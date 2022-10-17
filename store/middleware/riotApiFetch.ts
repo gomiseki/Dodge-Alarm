@@ -49,7 +49,6 @@ const riotAPiFetch = (RiotConnection: RiotAPI) => (store:any) => (next:any) => (
       }
       break;
     case 'SET_SUMMONER_FEATURE':
-      console.log(action.payload)
       store.getState().ALGORITHM.forEach((algo:Algorithms_type) => {
         console.log('set summoner feature');
         if (algo.selected && algo.algoData.matchCount) {

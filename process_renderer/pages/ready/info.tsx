@@ -38,11 +38,7 @@ const NotPickBolck = styled.div`
     justify-content:space-around;
     align-items: center;
 `;
-const PickBlock = styled.div`
-    width: 100%;
-    height: 100%;
-    display:flex;
-`;
+
 const PlayerContainer = styled(Link) <{ cell: number }>`
     position: relative ;
     flex: 1;
@@ -149,8 +145,9 @@ function Player({ data, score }: { data: inGameDataType, score: algoScoreType })
     }
     console.log(total);
   }, [score]);
+
   return (
-    (data && score)
+    (data.summonerMatchData.player && data.summonerMatchData.playerAPI && score)
       ? (
         <PlayerContainer to={`?index=${data.cellId % 5}`} cell={data.cellId % 5}>
           <IconCircle size="60px" total={total} position={data.assignedPosition} pick={data.championId || data.championPickIntent} />
@@ -160,20 +157,26 @@ function Player({ data, score }: { data: inGameDataType, score: algoScoreType })
               flex: '1', fontWeight: 'bold', fontSize: '13px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
             }}
             >
-              {data.summonerMatchData.playerAPI.summonerName}
+              {data!.summonerMatchData!.playerAPI?.summonerName}
             </p>
           </UserDescription>
           <UserDetail>
-            <TierBlock rank={data.summonerMatchData.player.lol.rankedLeagueTier.toLowerCase()}>{`${data.summonerMatchData.player.lol.rankedLeagueTier} ${data.summonerMatchData.player.lol.rankedLeagueDivision}`}</TierBlock>
+            {(data.summonerMatchData.player.lol.rankedLeagueTier
+            && data.summonerMatchData.player.lol.rankedLeagueDivision)
+            && (
+            <TierBlock rank={data.summonerMatchData.player.lol.rankedLeagueTier.toLowerCase()}>
+              {`${data.summonerMatchData.player.lol.rankedLeagueTier} ${data.summonerMatchData.player.lol.rankedLeagueDivision}`}
+            </TierBlock>
+            )}
             <WinLoseBlock isWin>
               W
               {' '}
-              {data.summonerMatchData.playerAPI.wins}
+              {data!.summonerMatchData!.playerAPI?.wins}
             </WinLoseBlock>
             <WinLoseBlock isWin={false}>
               L
               {' '}
-              {data.summonerMatchData.playerAPI.losses}
+              {data!.summonerMatchData!.playerAPI?.losses}
             </WinLoseBlock>
           </UserDetail>
           <UserEssential>
@@ -395,6 +398,7 @@ function PlayerDetail({ data, score }:
   const [champProf, setChampProf] = useState<any>([]);
   const [winRate, setWinRate] = useState<any>([]);
   const [scoreState, setScoreState] = useState<string>();
+  const { patchVersion } = useSelector((state: RootState) => state.GAMEASSET);
 
   const getSortedPositionIndex = (arr: number[]) => {
     const sorted: { position: string, prof: number }[] = [];
@@ -408,7 +412,7 @@ function PlayerDetail({ data, score }:
   const getSortedChampIndex = (name: string, arr: Match[]) => {
     const sorted: { champ: string, prof: number }[] = [];
     arr.forEach((match) => {
-      for (const participant of match.matchData.info.participants) {
+      for (const participant of match.matchData!.info.participants) {
         if (participant.summonerName === name) {
           if (sorted.map((v) => v.champ).includes(participant.championName)) {
             sorted.find((value) => value.champ === participant.championName)!.prof += 1;
@@ -426,7 +430,7 @@ function PlayerDetail({ data, score }:
   const getWinRate = (name: string, arr: Match[]) => {
     let [win, lose, rate] = [0, 0, ''];
     arr.forEach((v) => {
-      for (const participant of v.matchData.info.participants) {
+      for (const participant of v.matchData!.info.participants) {
         if (participant.summonerName === name) {
           if (participant.win) win += 1;
           else lose += 1;
@@ -444,9 +448,9 @@ function PlayerDetail({ data, score }:
 
   useEffect(() => {
     if (score) {
-      if (score.essential && data) {
+      if (score.essential && data.summonerMatchData.player && data.summonerMatchData.match) {
         setWinRate(
-          getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match)
+          getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
         );
         setPositionProf(getSortedPositionIndex(score.essential.포꼬.positionRate));
         setChampProf(
@@ -456,14 +460,19 @@ function PlayerDetail({ data, score }:
     }
   }, [data, score]);
 
-  if (data && score) {
+  if (
+    data
+    && data.summonerMatchData.player
+    && data.summonerMatchData.match
+    && data.summonerMatchData.playerAPI
+    && score) {
     return (
       <DetailContainer>
         <div style={{
           position: 'relative', height: '80px', padding: '5px', display: 'flex', justifyContent: 'space-around',
         }}
         >
-          <IconCircle size="80px" total={getScore(score)} userIcon={data.summonerMatchData.player.icon} pick={data.championId || data.championPickIntent} />
+          <IconCircle size="80px" total={getScore(score)} userIcon={data.summonerMatchData.player.icon} pick={data.championId} />
           <div style={{
             width: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
           }}
@@ -521,7 +530,7 @@ function PlayerDetail({ data, score }:
                     <EssentialBlock style={{ position: 'relative' }} state={key}>{key}</EssentialBlock>
                     {score.essential && (
                     <EssentialState
-                      match={data.summonerMatchData.match.length}
+                      match={data.summonerMatchData.match!.length}
                       dataKey={key}
                       position={data.assignedPosition}
                       data={score.essential[key]}
@@ -611,7 +620,7 @@ function PlayerDetail({ data, score }:
                         display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', flex: '1', color: 'white', fontSize: '10px', fontWeight: 'bold',
                       }}
                       >
-                        <CommonIMG style={{ width: `${size}px`, height: `${size}px` }} src={CHAMP_ICON(champ.champ)} />
+                        <CommonIMG style={{ width: `${size}px`, height: `${size}px` }} src={CHAMP_ICON(patchVersion || '1', champ.champ)} />
                         <p>{champ.prof}</p>
                       </div>
                     );
@@ -643,9 +652,9 @@ function PlayerDetail({ data, score }:
               %
             </WinRate>
             {data.summonerMatchData.match
-              .map((match) => match.matchData.info.participants
+              .map((match) => match.matchData!.info.participants
                 // eslint-disable-next-line max-len
-                .filter((participant) => participant.summonerName === data.summonerMatchData.player.gameName)
+                .filter((participant) => participant.summonerName === data.summonerMatchData.player!.gameName)
                 .map((info) => (
                   <div style={{
                     display: 'flex', height: '25px', width: '100%', margin: '5px', justifyContent: 'space-around',
@@ -659,7 +668,7 @@ function PlayerDetail({ data, score }:
                       {info.assists}
                     </KDABlock>
                     <CommonIMG style={{ width: '25px', height: '25px' }} src={POSITION(info.individualPosition.toLowerCase())} />
-                    <CommonIMG style={{ width: '25px', height: '25px' }} src={CHAMP_ICON(info.championName)} />
+                    <CommonIMG style={{ width: '25px', height: '25px' }} src={CHAMP_ICON(patchVersion || '1', info.championName)} />
                   </div>
                 )))}
           </div>
@@ -706,8 +715,8 @@ export default function Info() {
       <Container>
         {inGameData.length && inGameScore.length
           ? inGameData.map((data) => (
-            'summonerMatchData' in data
-              ? <Player data={data} key={data.cellId} score={inGameScore[data.cellId % 5]} />
+            'summonerMatchData' in data && data.summonerMatchData
+              ? <Player data={data} key={data.cellId % 5} score={inGameScore[data.cellId % 5]} />
               : (
                 <PlayerContainer to="" key={data.cellId % 5} cell={data.cellId % 5}>
                   <Loading size="60px" />

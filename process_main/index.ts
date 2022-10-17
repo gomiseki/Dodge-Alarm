@@ -34,6 +34,8 @@ const createReady = (url = '/'):void => {
     titleBarStyle: 'hidden',
     title: '너 쌩배지 - 닷지 경보기',
     show: false,
+    resizable: false,
+    transparent: true,
     webPreferences: {
       preload: preloadEntry,
       nodeIntegration: true,

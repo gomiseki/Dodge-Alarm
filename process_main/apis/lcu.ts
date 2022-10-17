@@ -20,7 +20,7 @@ import { setLocalUser, clearUser } from '../../store/user';
 import {
   clearInGame, setPickStatus, setSummonerFeature,
 } from '../../store/inGame';
-import { setClientState } from '../../store/gameAsset';
+import { setClientState, setFold } from '../../store/gameAsset';
 import { clearScore } from '../../store/inGameScore';
 
 export default class LCU {
@@ -121,6 +121,9 @@ export default class LCU {
             .catch(() => {
               this.isPick = false;
             });
+          this.lolWebSocket.subscribe('/lol-perks/v1/currentpage', () => {
+            this.store.dispatch(setFold(true));
+          });
           this.lolWebSocket.subscribe(LCU_ENDPOINT_CHAMP_SELECT, async (pickData) => {
             if (pickData.myTeam.length) this.store.dispatch(setPickStatus(pickData.myTeam));
             if (pickData.chatDetails.chatRoomName !== '' && !this.isPick) {
@@ -159,6 +162,7 @@ export default class LCU {
   async getParticipant(chatRoom:string):Promise<any> {
     this.store.dispatch(clearInGame());
     this.store.dispatch(clearScore());
+    this.store.dispatch(setFold(false));
     return new Promise((resolve, reject) => {
       this.LCURequest('GET', LCU_ENDPOINT_PARTICIPANTS(chatRoom))
         .then((result: any) => {
@@ -182,7 +186,6 @@ export default class LCU {
         .then((result: any) => {
           console.log('Set-User-completed');
           this.userInfo = result;
-          console.log(result);
           this.store.dispatch(setLocalUser(result));
           this.setWebSocket(this.lolClientCredentials);
         })

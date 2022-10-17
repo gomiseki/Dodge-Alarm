@@ -11,9 +11,9 @@ export const GET_ENTRIES_BY_ID = 'league/v4/entries/by-summoner/';
 // Data Dragon
 
 export const GET_PATCH_VERSION = 'https://ddragon.leagueoflegends.com/api/versions.json';
-export const PROFILE_ICON = (number:number) => `http://ddragon.leagueoflegends.com/cdn/12.5.1/img/profileicon/${number}.png`;
+export const PROFILE_ICON = (version:string, number:number) => `http://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${number}.png`;
 export const PATCH_TO_CHAMP = (version:string) => `https://ddragon.leagueoflegends.com/cdn/${version}/data/ko_KR/champion.json`;
-export const CHAMP_ICON = (name:string) => `http://ddragon.leagueoflegends.com/cdn/12.6.1/img/champion/${name}.png`;
+export const CHAMP_ICON = (version:string, name:string) => `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${name}.png`;
 
 // Community Dragon
 export const RANK_PLATE = 'https://raw.communitydragon.org/12.5/plugins/rcp-fe-lol-postgame/global/default/generic-progression-plate.png';

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { AiOutlineRead } from 'react-icons/ai';
 import { shallowEqual, useSelector } from 'react-redux';
 import mix from 'mix-color';
-import Loading from '../../components/loading';
 import ScoreCircle from '../../components/scoreCircle';
 
 import { algoScoreType, essentialProps } from '../../../types/algorithm.type';
@@ -64,13 +63,25 @@ const Button = styled.div<{mouseOver:boolean}>`
   width: 56px;
   height: 56px;
   border-radius: 30px;
-  background-color: ${({ mouseOver }) => (mouseOver ? 'black' : 'transperant')};
+  background-color: ${({ mouseOver }) => (mouseOver ? 'black' : 'white')};
   margin-left: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 50%;
-  z-index: 9999;
+  opacity: ${({ mouseOver }) => (mouseOver ? '70%' : '2%')};
+  z-index: 0;
+`;
+
+const TradeButton = styled.div`
+  background-color: transparent;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  position: absolute;
+  left: 90px;
+  bottom: 6px;
+   z-index: 999;
 `;
 
 function InfoButton({ onClick }:{onClick:any}) {
@@ -82,7 +93,12 @@ function InfoButton({ onClick }:{onClick:any}) {
       onMouseOver={() => { setMouseOver(true); }}
       onMouseOut={() => { setMouseOver(false); }}
     >
-      {mouseOver && <AiOutlineRead style={{ color: 'white', width: '60%', height: '60%' }} />}
+      {mouseOver && (
+      <AiOutlineRead style={{
+        color: 'white', width: '60%', height: '60%',
+      }}
+      />
+      )}
     </Button>
   );
 }
@@ -151,7 +167,7 @@ function PlayerInfo({ data, isProgress }:infoProps) {
         // :
         // null
         // for debugging (
-        ? (
+        && (
           <div style={{
             width: '100%', height: '100%', display: 'flex', alignItems: 'center',
           }}
@@ -163,10 +179,10 @@ function PlayerInfo({ data, isProgress }:infoProps) {
               mycell={data.summonerId === user.localUserInfo.summonerId}
             />
           </div>
-        )
-        : <Loading size="55px" />}
+        )}
       {'summonerMatchData' in data && score.length ? <ScoreBlock picked={isProgress} total={getScore(score[data.cellId % 5])}>{`score:${getScore(score[data.cellId % 5]).toFixed(0)}`}</ScoreBlock> : null}
       <InfoButton onClick={() => { openDetail(data.cellId % 5); }} />
+      <TradeButton />
     </Container>
   );
 }

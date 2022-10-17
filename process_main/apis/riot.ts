@@ -55,7 +55,7 @@ export default class RiotAPI {
         const matchData = await RiotAPI.historyToMatch(historyData.data);
         playerData.push({ player, playerAPI, match: matchData });
       } catch (error) {
-        throw new Error('PLAYER_TO_HISTORY_API_rejected');
+        playerData.push({ player: null, playerAPI: null, match: null });
       }
     }
     return playerData;
@@ -68,7 +68,7 @@ export default class RiotAPI {
         const matchInfo = await RiotAPI.callAPI(GET_MATCH_BY_MATCHID, matchName, '?', true);
         matchData.push({ matchId: matchName, matchData: matchInfo.data });
       } catch (error) {
-        throw new Error('HISTORY_TO_MATCH_API_rejected');
+        matchData.push({ matchId: '', matchData: null });
       }
     }
     return matchData;

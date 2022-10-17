@@ -2,14 +2,14 @@ import { Participant_type } from './participant.type';
 import { userLeague_type } from './userInfo.type';
 
 export interface ParticipantMatchData_type {
-    player: Participant_type;
-    playerAPI:userLeague_type;
-    match: Match[];
+    player: Participant_type|null;
+    playerAPI:userLeague_type|null;
+    match: Match[]|null;
 }
 
 export interface Match {
     matchId: string;
-    matchData: MatchData;
+    matchData: MatchData | null;
 }
 
 export interface MatchData {

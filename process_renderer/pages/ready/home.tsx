@@ -99,8 +99,9 @@ const Tierimg = styled.img`
 // color:${props=>props.theme.tier[props.color].sub};
 function Summoner() {
   const userState = useSelector((state: RootState) => state.USER);
+  const version = useSelector((state: RootState) => state.GAMEASSET.patchVersion);
   return (
-    userState.apiStatus.league && userState.localUserInfo.accountId
+    (userState.apiStatus.league && userState.localUserInfo.accountId && version)
       ? (
         <SummonerContainer>
           <IconCover color={userState.leagueUserInfo.tier.toLowerCase()} style={{}}>
@@ -110,7 +111,7 @@ function Summoner() {
                 ? theme.editions[
                   userState.leagueUserInfo.summonerId].tier[
                   userState.leagueUserInfo.tier.toLowerCase()].profile
-                : PROFILE_ICON(userState.localUserInfo.profileIconId)
+                : PROFILE_ICON(version, userState.localUserInfo.profileIconId)
               }
             />
           </IconCover>
@@ -308,7 +309,6 @@ export default function Home() {
                 editionId={userState.leagueUserInfo.summonerId}
                 options={algoArr.map((algo) => algo.name).filter((name) => name !== 'New')}
                 defaultValue={algoArr.filter((algo) => algo.select)[0].name}
-                selectedOption={algoArr.filter((algo) => algo.select)[0].name}
                 requestFunc={algoChange}
               />
             )

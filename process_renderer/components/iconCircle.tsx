@@ -59,11 +59,11 @@ export default function IconCircle({
   if (!userIcon && position) {
     return (
       <ScoreCircle size={size} total={total}>
-        {idToName.champIdToName
+        {(idToName.champIdToName && idToName.patchVersion)
           ? (
             <IconContainer>
               {getNameFromId(pick) && pick
-                ? <DefaultCircle src={CHAMP_ICON(getNameFromId(pick))} />
+                ? <DefaultCircle src={CHAMP_ICON(idToName.patchVersion, getNameFromId(pick))} />
                 : <PositionCircle src={POSITION(position)} />}
             </IconContainer>
           )
@@ -74,13 +74,13 @@ export default function IconCircle({
 
   return (
     <ScoreCircle size={size} total={total}>
-      {idToName.champIdToName && userIcon
+      {(idToName.champIdToName && idToName.patchVersion && userIcon)
         ? (
           <IconContainer>
             <DefaultCircle
               src={getNameFromId(pick)
-                ? CHAMP_ICON(getNameFromId(pick))
-                : PROFILE_ICON(userIcon)}
+                ? CHAMP_ICON(idToName.patchVersion, getNameFromId(pick))
+                : PROFILE_ICON(idToName.patchVersion, userIcon)}
             />
           </IconContainer>
         )

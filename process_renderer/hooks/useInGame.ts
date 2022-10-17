@@ -21,7 +21,11 @@ export default function useIngame() {
     const arr:any[] = [];
     if (inGameData.length > 0) {
       inGameData.forEach((data:inGameDataType) => {
-        if ('summonerMatchData' in data && data?.summonerMatchData?.match?.length)arr.push(algoAnalysis(algoData, data));
+        if ('summonerMatchData' in data && data?.summonerMatchData?.match?.length) {
+          arr.push(algoAnalysis(algoData, data));
+        } else {
+          arr.push([]);
+        }
       });
     }
     return arr;
