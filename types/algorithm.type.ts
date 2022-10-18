@@ -99,7 +99,7 @@ export const initAlgo:Algorithm_type = {
   KDAPerMatch: {
     type: 'AlgorithmNomal_type',
     maxScore: 0,
-    minScore: 10,
+    minScore: 5,
     ratio: 0,
   },
   winRate: {
