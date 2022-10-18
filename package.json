@@ -8,29 +8,40 @@
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "electron-builder --win nsis:x64"
+    "deploy": "tsc && vite build && electron-builder"
   },
   "build": {
     "productName": "Dodge-Alarm",
     "appId": "dodge.alarm",
     "asar": true,
+    "files": [
+      "dist-electron",
+      "dist"
+    ],
     "win": {
       "target": [
-        "nsis"
-      ],
-      "icon": "public/icon.svg"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
     },
     "nsis": {
       "oneClick": false,
-      "installerIcon": "public/icon.svg",
-      "allowToChangeInstallationDirectory": false,
-      "createDesktopShortcut": true
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
     },
     "directories": {
+      "buildResources": "public",
       "output": "./build/",
       "app": "."
     }
   },
+  "extraFiles": [
+    "algorithms"
+  ],
   "dependencies": {
     "@vitejs/plugin-react": "^2.0.1",
     "axios": "^0.27.2",

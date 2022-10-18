@@ -12,7 +12,7 @@ import RiotAPI from './apis/riot';
 
 import configureStore from '../store';
 
-const rendererEntry = app.isPackaged ? './dist/index.html' : 'http://localhost:3000';
+const rendererEntry = app.isPackaged ? path.join(__dirname, '../index.html') : 'http://localhost:3000';
 const preloadEntry = path.join(__dirname, '/preload/index.js');
 
 let mainWindow:BrowserWindow;
@@ -41,8 +41,13 @@ const createReady = (url = '/'):void => {
       nodeIntegration: true,
     },
   });
-  readyWindow.loadURL(rendererEntry + url);
-  readyWindow.webContents.openDevTools({ mode: 'detach' });
+
+  if (app.isPackaged) {
+    readyWindow.loadFile(rendererEntry + url);
+  } else {
+    readyWindow.loadURL(rendererEntry + url);
+    readyWindow.webContents.openDevTools({ mode: 'detach' });
+  }
 
   readyWindow.on('closed', () => {
     readyWindow = null;
@@ -62,8 +67,12 @@ const createWindow = async () => {
     ...overlayWindow.WINDOW_OPTS,
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(path.join(rendererEntry, '/main_window'));
+  if (app.isPackaged) {
+    mainWindow.loadFile(rendererEntry, { hash: 'main_window' });
+  } else {
+    mainWindow.loadURL(`${rendererEntry}#main_window`);
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
+  }
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools({ mode: 'detach', activate: true });

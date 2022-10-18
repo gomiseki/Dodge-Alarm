@@ -15,7 +15,7 @@ function App() {
       <GlobalStyle />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          {window.location.pathname === '/main_window' ? <Main /> : <Ready />}
+          {window.location.hash === '#main_window' ? <Main /> : <Ready />}
         </ThemeProvider>
       </Provider>
     </React.StrictMode>
