@@ -55,8 +55,12 @@ export default function Number({
   const numRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!value) numRef.current?.setAttribute('value', '0');
-    else numRef.current?.setAttribute('value', value.toString());
+    if (!value) {
+      numRef.current?.setAttribute('value', '0');
+    } else {
+      console.log('number', value)
+      numRef.current?.setAttribute('value', value.toString());
+    }
   }, [value]);
 
   const plus = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,7 +82,7 @@ export default function Number({
 
   return (
     <Container>
-      <NumberInput type="number" max={max} min={min} name={name} step={step} onChange={inputChange} ref={numRef} />
+      <NumberInput type="number" value={value} max={max} min={min} name={name} step={step} onChange={inputChange} ref={numRef} />
       <Button style={minusStyle} onClick={minus}><AiOutlineMinus /></Button>
       <Button style={plusStyle} onClick={plus}><AiOutlinePlus /></Button>
     </Container>

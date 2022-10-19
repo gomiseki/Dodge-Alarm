@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { MdOutlineHighlightOff } from 'react-icons/md';
 import State from './state';
 import PlayerInfo from './playerInfo';
 
@@ -45,8 +46,18 @@ const Logo = styled.div`
 `;
 
 const LogoSpan = styled.div`
+  margin-right: 5px;
   background-color: black;
   height: 16px;
+  cursor: pointer;
+  &:hover {
+      background-color: #000;
+      opacity:0.8;
+  }
+`;
+
+const OffIcon = styled(MdOutlineHighlightOff)`
+  height: 100%;
   cursor: pointer;
   &:hover {
       background-color: #000;
@@ -65,11 +76,16 @@ export default function Main() {
     window.api.send('Ready-Window');
   }, []);
 
+  const onQuit = useCallback(() => {
+    window.api.send('Quit-Process');
+  }, []);
+
   return (
     <Container>
       <Top>
         <Logo>
           <LogoSpan onClick={onClick}>Powerd by 너 쌩배지 v1</LogoSpan>
+          <OffIcon onClick={onQuit} />
         </Logo>
         {(pickPhase && inGameData) && <State />}
       </Top>
