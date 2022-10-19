@@ -125,8 +125,8 @@ const defaultProps = {
 export default function RangeInput({
   min, max, left, right, leftName, rightName, onChange, reverse,
 }:Props) {
-  const [minVal, setMinVal] = useState(left);
-  const [maxVal, setMaxVal] = useState(right);
+  const [minVal, setMinVal] = useState(0);
+  const [maxVal, setMaxVal] = useState(0);
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef<HTMLInputElement>(null);
@@ -147,6 +147,10 @@ export default function RangeInput({
     }
   }, [maxVal, minVal, getPercent]);
 
+  useEffect(() => {
+    setMinVal(left);
+    setMaxVal(right);
+  }, [left, right]);
 
   return (
     <Container>
