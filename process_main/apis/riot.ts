@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ipcMain } from 'electron';
-
 import {
   GET_MATCHES_BY_PUUID,
   GET_MATCH_BY_MATCHID,
@@ -38,38 +37,46 @@ export default class RiotAPI {
 
   async playerToHistory(data:Participant_type[], before:number):
   Promise<ParticipantMatchData_type[]> {
-    const playerData = [];
-    for await (const player of data) {
+    const playerData = data.slice();
+    const result = await Promise.all(playerData.map(async (player) => {
       try {
-        const playerInfo = await RiotAPI.callAPI(GET_SUMMONER_BY_NAME, player.gameName || '', '?');
+        const playerInfo = await RiotAPI.callAPI(GET_SUMMONER_BY_NAME, player.name || '', '?');
         const historyData = await RiotAPI.callAPI(GET_MATCHES_BY_PUUID, `${playerInfo.data.puuid}/ids?type=ranked&start=0&count=${before}`, '&', true);
         const playerAPI = await this.getLeague(playerInfo.data.id);
         const matchData = await RiotAPI.historyToMatch(historyData.data);
-        playerData.push({ player, playerAPI, match: matchData });
+        return ({ player, playerAPI, match: matchData });
       } catch (error) {
-        playerData.push({ player: null, playerAPI: null, match: null });
+        return { player: null, playerAPI: null, match: null };
       }
-    }
-    return playerData;
+    }));
+    return result;
   }
 
   static async historyToMatch(historyData:string[]):Promise<Match[]> {
-    const matchData = [];
-    for await (const matchName of historyData) {
+    const matchData = historyData.slice();
+    const result = await Promise.all(matchData.map(async (matchName) => {
       try {
         const matchInfo = await RiotAPI.callAPI(GET_MATCH_BY_MATCHID, matchName, '?', true);
-        matchData.push({ matchId: matchName, matchData: matchInfo.data });
+        return { matchId: matchName, matchData: matchInfo.data };
       } catch (error) {
-        matchData.push({ matchId: '', matchData: null });
+        return { matchId: '', matchData: null };
       }
-    }
-    return matchData;
+    }));
+    return result;
   }
 
-  static async callAPI(endpoint:string, data:string, orAnd:string, asia = false) {
+  static async callAPI(endpoint:string, data:string, orAnd:string, asia = false)
+  :Promise<AxiosResponse<any, any>> {
     const URL = encodeURI(`${asia ? RIOT_API_URL_ASIA : RIOT_API_URL}${endpoint}${data}${orAnd}api_key=${import.meta.env.VITE_RIOT_API_KEY}`);
-    const result = await axios.get(URL).catch((e) => { throw new Error(data + e); });
-    return result;
+    return new Promise((resolve, reject) => {
+      axios.get(URL)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch(() => {
+          this.callAPI(endpoint, data, orAnd, asia).then(resolve).catch(reject);
+        });
+    });
   }
 
   static async removeHandle() {

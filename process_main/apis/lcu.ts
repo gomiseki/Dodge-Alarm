@@ -75,8 +75,14 @@ export default class LCU {
             this.store.dispatch(setFold(true));
           });
           this.lolWebSocket.subscribe(LCU_ENDPOINT_CHAMP_SELECT, async (pickData) => {
-            if (pickData.myTeam.length) this.store.dispatch(setPickStatus(pickData.myTeam));
+            if (pickData.myTeam.length) {
+              this.store.dispatch(setPickStatus(pickData.myTeam));
+            }
             if (pickData.chatDetails.chatRoomName !== '' && !this.isPick) {
+              this.store.dispatch(clearInGame());
+              this.store.dispatch(clearScore());
+              this.store.dispatch(setFold(false));
+              this.store.dispatch(setPickStatus(pickData.myTeam));
               this.isPick = true;
               const chatRoom = `${pickData.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
               await this.getParticipant(chatRoom);
@@ -104,21 +110,19 @@ export default class LCU {
   }
 
   async getParticipant(chatRoom:string):Promise<any> {
-    this.store.dispatch(clearInGame());
-    this.store.dispatch(clearScore());
-    this.store.dispatch(setFold(false));
     return new Promise((resolve, reject) => {
       this.LCURequest('GET', LCU_ENDPOINT_PARTICIPANTS(chatRoom))
         .then((result: any) => {
           const { gameQueueType } = result[0].lol;
-          if (gameQueueType === 'RANKED_SOLO_5x5') {
+          if (gameQueueType === 'RANKED_SOLO_5x5' && result.length === 5) {
+            console.log('getParticipant: setSummonerFeature');
             this.store.dispatch(setSummonerFeature(result));
             resolve(result);
           } else {
-            reject();
+            this.getParticipant(chatRoom).then(resolve).catch(reject);
           }
         })
-        .catch(() => {
+        .catch((e) => {
           this.getParticipant(chatRoom).then(resolve).catch(reject);
         });
     });

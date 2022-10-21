@@ -177,10 +177,10 @@ function PlayerInfo({ data, isProgress }:infoProps) {
               total={getScore(score[data.cellId % 5])}
               mycell={data.summonerId === user.localUserInfo.summonerId}
             />
+            <InfoButton onClick={() => { openDetail(data.cellId % 5); }} />
           </div>
         )}
       {'summonerMatchData' in data && score.length ? <ScoreBlock picked={isProgress} total={getScore(score[data.cellId % 5])}>{`score:${getScore(score[data.cellId % 5]).toFixed(0)}`}</ScoreBlock> : null}
-      <InfoButton onClick={() => { openDetail(data.cellId % 5); }} />
       <TradeButton />
     </Container>
   );
