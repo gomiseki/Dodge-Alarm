@@ -84,7 +84,7 @@ export default function Main() {
     <Container>
       <Top>
         <Logo>
-          <LogoSpan onClick={onClick}>Powerd by 너 쌩배지 v1</LogoSpan>
+          <LogoSpan onClick={onClick}>Powerd by 너 쌩배지 βeta</LogoSpan>
           <OffIcon onClick={onQuit} />
         </Logo>
         {(pickPhase && inGameData) && <State />}
