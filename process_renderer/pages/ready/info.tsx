@@ -447,7 +447,13 @@ function PlayerDetail({ data, score }:
   };
 
   useEffect(() => {
-    if (score) {
+    if (
+      data
+      && 'summonerMatchData' in data
+      && data.summonerMatchData.player
+      && data.summonerMatchData.match
+      && data.summonerMatchData.playerAPI
+      && score) {
       if (score.essential && data.summonerMatchData.player && data.summonerMatchData.match) {
         setWinRate(
           getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
@@ -462,6 +468,7 @@ function PlayerDetail({ data, score }:
 
   if (
     data
+    && 'summonerMatchData' in data
     && data.summonerMatchData.player
     && data.summonerMatchData.match
     && data.summonerMatchData.playerAPI
@@ -710,18 +717,18 @@ export default function Info() {
   const inGameScore = useSelector((state: RootState) => state.INGAMESCORE);
 
   if (!(index)) {
-    console.log(index);
     return (
       <Container>
         {inGameData.length && inGameScore.length
-          ? inGameData.map((data) => (
-            'summonerMatchData' in data && data.summonerMatchData
+          ? inGameData.map((data, i) => (
+            ('summonerMatchData' in data && !Array.isArray(inGameScore[i]))
               ? <Player data={data} key={data.cellId % 5} score={inGameScore[data.cellId % 5]} />
               : (
                 <PlayerContainer to="" key={data.cellId % 5} cell={data.cellId % 5}>
                   <Loading size="60px" />
                 </PlayerContainer>
               )
+
           ))
           : (
             <NotPickBolck>
@@ -735,7 +742,7 @@ export default function Info() {
 
   return (
     <Container>
-      {typeof index === 'string' && <PlayerDetail data={inGameData[parseInt(index, 10)]} score={inGameScore[parseInt(index, 10)]} />}
+      {(typeof index === 'string' && inGameData.length && inGameScore.length) && <PlayerDetail data={inGameData[parseInt(index, 10)]} score={inGameScore[parseInt(index, 10)]} />}
     </Container>
   );
 }
