@@ -14,6 +14,7 @@ import configureStore from '../store';
 
 const rendererEntry = app.isPackaged ? path.join(__dirname, '../index.html') : 'http://localhost:3000';
 const preloadEntry = path.join(__dirname, '/preload/index.js');
+const algoEntry = app.isPackaged ? path.join(app.getAppPath(), '../algorithms') : `${app.getAppPath()}\\dist\\algorithms`;
 
 let mainWindow:BrowserWindow;
 let readyWindow:BrowserWindow|null = null;
@@ -129,7 +130,7 @@ app.on('ready', async () => {
       writeFile: writeFileSync,
       renameFile: renameSync,
       unlinkFile: unlinkSync,
-      algoPath: `${app.getAppPath()}\\dist\\algorithms`,
+      algoPath: algoEntry,
     },
   });
 
