@@ -114,6 +114,9 @@ export default class LCU {
           this.lolWebSocket = socket;
           this.LCURequest('GET', LCU_ENDPOINT_CHAMP_SELECT)
             .then((result:any) => {
+              if (result.myTeam.length) {
+                this.store.dispatch(setPickStatus(result.myTeam));
+              }
               this.isPick = true;
               const chatRoom = `${result.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
               this.getParticipant(chatRoom);
