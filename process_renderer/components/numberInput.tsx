@@ -58,7 +58,6 @@ export default function Number({
     if (!value) {
       numRef.current?.setAttribute('value', '0');
     } else {
-      console.log('number', value)
       numRef.current?.setAttribute('value', value.toString());
     }
   }, [value]);

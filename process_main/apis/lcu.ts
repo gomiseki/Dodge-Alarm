@@ -118,7 +118,6 @@ export default class LCU {
         .then((result: any) => {
           const { gameQueueType } = result[0].lol;
           if (gameQueueType === 'RANKED_SOLO_5x5' && result.length === 5) {
-            console.log('getParticipant: setSummonerFeature');
             this.store.dispatch(setSummonerFeature(result));
             resolve(result);
           } else {
