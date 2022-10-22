@@ -1,4 +1,5 @@
-import { N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA } from './강찬밥';
+import { 강찬밥 } from './강찬밥';
+import { 고수달 } from './고수달';
 
 interface IProfile{
   nickname: string,
@@ -27,7 +28,8 @@ export interface IEdition{
 }
 
 const editions = {
-  N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA,
+  N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA: 강찬밥,
+  'RqrhG_wfSKRimnd6ilk8whHdM4-8cOFkUJvRXd71QT3HQLY': 고수달,
 };
 
 export default editions;
