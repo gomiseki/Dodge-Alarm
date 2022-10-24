@@ -1,7 +1,6 @@
-const CHAMP_BUGS = {
+const CHAMP_BUGS:any = {
   FiddleSticks: 'Fiddlesticks',
-} as const;
-type CHAMP_BUGS_TYPE = typeof CHAMP_BUGS[keyof typeof CHAMP_BUGS];
+};
 
 // URL
 export const RIOT_API_URL = 'https://kr.api.riotgames.com/lol/';
@@ -17,7 +16,7 @@ export const GET_ENTRIES_BY_ID = 'league/v4/entries/by-summoner/';
 export const GET_PATCH_VERSION = 'https://ddragon.leagueoflegends.com/api/versions.json';
 export const PROFILE_ICON = (version:string, number:number) => `http://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${number}.png`;
 export const PATCH_TO_CHAMP = (version:string) => `https://ddragon.leagueoflegends.com/cdn/${version}/data/ko_KR/champion.json`;
-export const CHAMP_ICON = (version:string, name:CHAMP_BUGS_TYPE) => `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${name}.png`;
+export const CHAMP_ICON = (version:string, name:string) => `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${name in CHAMP_BUGS ? CHAMP_BUGS[name] : name}.png`;
 
 // Community Dragon
 export const RANK_PLATE = 'https://raw.communitydragon.org/12.5/plugins/rcp-fe-lol-postgame/global/default/generic-progression-plate.png';
