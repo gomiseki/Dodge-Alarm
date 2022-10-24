@@ -86,6 +86,11 @@ export default class LCU {
               this.store.dispatch(clearScore());
               this.store.dispatch(setFold(false));
               this.store.dispatch(setPickStatus(pickData.myTeam));
+              this.store.dispatch(
+                setClientState(
+                  [false, false, false, false, false, false, false, false, false, false],
+                ),
+              );
               this.isPick = true;
               const chatRoom = `${pickData.chatDetails.chatRoomName.split('@')[0]}%40champ-select.kr1.pvp.net`;
               await this.getParticipant(chatRoom);
