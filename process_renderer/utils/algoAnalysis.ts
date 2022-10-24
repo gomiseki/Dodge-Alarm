@@ -129,7 +129,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
               }
             });
             algoScore.deathPerMatch.score /= inGameData.summonerMatchData.match!.length;
-            algoScore.deathPerMatch.state = `평균 데스 : ${algoScore.deathPerMatch.score} / ${inGameData.summonerMatchData.match?.length} game`;
+            algoScore.deathPerMatch.state = `평균 데스 : ${algoScore.deathPerMatch.score.toFixed(2)} / ${inGameData.summonerMatchData.match?.length} game`;
             break;
           }
           case 'KDAPerMatch': {
@@ -143,7 +143,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
               }
             });
             algoScore.KDAPerMatch.score /= inGameData.summonerMatchData.match!.length;
-            algoScore.KDAPerMatch.state = `평균 KDA : ${algoScore.KDAPerMatch.score} / ${inGameData.summonerMatchData.match!.length} game`;
+            algoScore.KDAPerMatch.state = `평균 KDA : ${algoScore.KDAPerMatch.score.toFixed(2)} / ${inGameData.summonerMatchData.match!.length} game`;
             break;
           }
           case 'winRate': {
@@ -158,7 +158,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
 
             algoScore.winRate.score /= inGameData.summonerMatchData.match!.length;
             algoScore.winRate.score *= 100;
-            algoScore.winRate.state = `최근 승률 : ${algoScore.winRate.score}%`;
+            algoScore.winRate.state = `최근 승률 : ${algoScore.winRate.score.toFixed(2)}%`;
             break;
           }
           case 'maxDeathPerCount': {
