@@ -28,7 +28,7 @@
     "positionRatio":{
         "type":"AlgorithmRatio_type",
         "maxRatio":0,
-        "minRatio":0,
+        "minRatio":100,
         "ratio":0
     },
     "champUseRatio":{

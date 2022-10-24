@@ -1,7 +1,7 @@
 {
   "name": "dodge-alarm",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "author": "gomi",
   "main": "./dist/electron/index.js",
   "scripts": {
