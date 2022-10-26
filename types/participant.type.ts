@@ -6,7 +6,7 @@ export interface Participant_type {
     id?: string;
     lastSeenOnlineTimestamp?: null;
     lol: Lol;
-    name?: string;
+    name: string;
     patchline?: string;
     pid?: string;
     platformId?: string;

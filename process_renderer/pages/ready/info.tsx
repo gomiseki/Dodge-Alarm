@@ -450,11 +450,11 @@ function PlayerDetail({ data, score }:
       && score) {
       if (score.essential && data.summonerMatchData.player && data.summonerMatchData.match) {
         setWinRate(
-          getWinRate(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
+          getWinRate(data.summonerMatchData.player.name, data.summonerMatchData.match),
         );
         setPositionProf(getSortedPositionIndex(score.essential.포꼬.positionRate));
         setChampProf(
-          getSortedChampIndex(data.summonerMatchData.player.gameName, data.summonerMatchData.match),
+          getSortedChampIndex(data.summonerMatchData.player.name, data.summonerMatchData.match),
         );
       }
     }
@@ -482,7 +482,7 @@ function PlayerDetail({ data, score }:
               marginLeft: '5px', color: 'white', width: '120px', fontSize: '15px', fontWeight: 'bold',
             }}
             >
-              {data.summonerMatchData.player.gameName}
+              {data.summonerMatchData.player.name}
             </p>
             <div style={{ display: 'flex', marginTop: '10px' }}>
               <TierBlock rank={data.summonerMatchData.player.lol.rankedLeagueTier.toLowerCase()}>{`${data.summonerMatchData.player.lol.rankedLeagueTier} ${data.summonerMatchData.player.lol.rankedLeagueDivision}`}</TierBlock>
@@ -655,7 +655,7 @@ function PlayerDetail({ data, score }:
             {data.summonerMatchData.match
               .map((match) => match.matchData!.info.participants
                 // eslint-disable-next-line max-len
-                .filter((participant) => participant.summonerName === data.summonerMatchData.player!.gameName)
+                .filter((participant) => participant.summonerName === data.summonerMatchData.player!.name)
                 .map((info) => (
                   <div style={{
                     display: 'flex', height: '25px', width: '100%', margin: '5px', justifyContent: 'space-around',
