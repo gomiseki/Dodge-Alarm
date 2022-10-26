@@ -123,7 +123,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
           case 'deathPerMatch': {
             inGameData.summonerMatchData.match?.forEach((game) => {
               for (const participant of game.matchData!.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                   algoScore.deathPerMatch.score += participant.deaths;
                   break;
                 }
@@ -136,7 +136,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
           case 'KDAPerMatch': {
             inGameData.summonerMatchData.match?.forEach((game) => {
               for (const participant of game.matchData!.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                   algoScore.KDAPerMatch.score
                 += (participant.kills + participant.assists) / participant.deaths;
                   break;
@@ -151,7 +151,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
             console.log(algoScore);
             inGameData.summonerMatchData.match?.forEach((game) => {
               for (const participant of game.matchData!.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                   if (participant.win)algoScore.winRate.score += 1;
                   break;
                 }
@@ -166,7 +166,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
           case 'maxDeathPerCount': {
             inGameData.summonerMatchData.match?.forEach((game) => {
               for (const participant of game.matchData!.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                   if (participant.deaths > (<AlgorithmDeath_type>algoData[e]).maxDeath) {
                     algoScore.maxDeathPerCount.score += 1;
                   }
@@ -182,7 +182,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
           case 'positionRatio': {
             inGameData.summonerMatchData.match?.forEach((game) => {
               for (const participant of game.matchData!.info.participants) {
-                if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                   if (participant.individualPosition.toLowerCase()
                   === inGameData.assignedPosition) {
                     algoScore.positionRatio.score += 1;
@@ -204,7 +204,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
             if (champ) {
               inGameData.summonerMatchData.match?.forEach((game) => {
                 for (const participant of game.matchData!.info.participants) {
-                  if (participant.summonerName === inGameData.summonerMatchData.player?.gameName) {
+                  if (participant.summonerName === inGameData.summonerMatchData.player?.name) {
                     if (champ === participant.championId)algoScore.champUseRatio.score += 1;
                     break;
                   }
@@ -281,7 +281,7 @@ const algoAnalysis = (algoData:Algorithm_type|boolean, inGameData:inGameDataType
   }
   inGameData.summonerMatchData.match?.forEach((game) => {
     for (const participant of game.matchData!.info.participants) {
-      if (participant.summonerName === inGameData.summonerMatchData.player!.gameName
+      if (participant.summonerName === inGameData.summonerMatchData.player!.name
         && algoScore.essential) {
         if (inGameData.championId === participant.championId) {
           algoScore.essential.꼴픽.champUse += 1;
