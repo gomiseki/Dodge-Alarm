@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
+import url from 'url';
 import { overlayWindow } from 'electron-overlay-window';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
@@ -12,7 +13,7 @@ import RiotAPI from './apis/riot';
 
 import configureStore from '../store';
 
-const rendererEntry = app.isPackaged ? path.join(__dirname, '../index.html') : 'http://localhost:3000';
+const rendererEntry = app.isPackaged ? path.join(__dirname, '../index.html') : 'localhost:3000';
 const preloadEntry = path.join(__dirname, '/preload/index.js');
 const algoEntry = app.isPackaged ? path.join(app.getAppPath(), '../algorithms') : `${app.getAppPath()}\\dist\\algorithms`;
 
@@ -23,7 +24,7 @@ let lolClientCredentials:Credentials;
 
 app.disableHardwareAcceleration();
 
-const createReady = (url = '/'):void => {
+const createReady = (hash = ''):void => {
   let already = false;
   BrowserWindow.getAllWindows().forEach((w) => {
     if (w.title === '너 쌩배지 - 닷지 경보기') already = true;
@@ -43,12 +44,14 @@ const createReady = (url = '/'):void => {
     },
   });
 
-  if (app.isPackaged) {
-    readyWindow.loadFile(rendererEntry + url);
-  } else {
-    readyWindow.loadURL(rendererEntry + url);
-    readyWindow.webContents.openDevTools({ mode: 'detach' });
-  }
+  readyWindow.loadURL(url.format({
+    protocol: app.isPackaged ? 'file:' : 'http:',
+    slashes: true,
+    pathname: `${rendererEntry}`,
+    hash,
+  }));
+
+  if (!app.isPackaged) readyWindow.webContents.openDevTools({ mode: 'detach' });
 
   readyWindow.on('closed', () => {
     readyWindow = null;
@@ -67,13 +70,15 @@ const createWindow = async () => {
     },
     ...overlayWindow.WINDOW_OPTS,
   });
+  console.log(rendererEntry);
+  mainWindow.loadURL(url.format({
+    protocol: app.isPackaged ? 'file:' : 'http:',
+    slashes: true,
+    pathname: rendererEntry,
+    hash: 'main_window',
+  }));
 
-  if (app.isPackaged) {
-    mainWindow.loadFile(rendererEntry, { hash: 'main_window' });
-  } else {
-    mainWindow.loadURL(`${rendererEntry}#main_window`);
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-  }
+  if (!app.isPackaged)mainWindow.webContents.openDevTools({ mode: 'detach', activate: true });
 
   // attach overlay window
   overlayWindow.attachTo(mainWindow, 'League of Legends');
@@ -112,8 +117,15 @@ app.on('ready', async () => {
   ipcMain.on('Open-Detail', (e, id) => {
     if (readyWindow) {
       readyWindow.focus();
-      readyWindow.loadURL(`${rendererEntry}/#/info?index=${id}`);
-    } else (createReady(`/#/info?index=${id}`));
+      readyWindow.loadURL(url.format({
+        protocol: app.isPackaged ? 'file:' : 'http:',
+        slashes: true,
+        pathname: rendererEntry,
+        hash: `/info?index=${id}`,
+      }));
+    } else {
+      createReady(`/info?index=${id}`);
+    }
   });
 
   // init status
