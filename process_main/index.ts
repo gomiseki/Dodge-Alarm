@@ -70,7 +70,7 @@ const createWindow = async () => {
     },
     ...overlayWindow.WINDOW_OPTS,
   });
-  console.log(rendererEntry);
+
   mainWindow.loadURL(url.format({
     protocol: app.isPackaged ? 'file:' : 'http:',
     slashes: true,

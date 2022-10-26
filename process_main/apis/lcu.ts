@@ -74,9 +74,6 @@ export default class LCU {
             .catch(() => {
               this.isPick = false;
             });
-          this.lolWebSocket.subscribe('/lol-perks/v1/currentpage', () => {
-            this.store.dispatch(setFold(true));
-          });
           this.lolWebSocket.subscribe(LCU_ENDPOINT_CHAMP_SELECT, async (pickData) => {
             if (pickData.myTeam.length) {
               this.store.dispatch(setPickStatus(pickData.myTeam));
