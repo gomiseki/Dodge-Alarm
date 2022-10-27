@@ -1,4 +1,4 @@
-# Dodge-Alarm
+# 너 쌩배지! / Dodge-Alarm
 
 <img src='https://user-images.githubusercontent.com/50083131/198163308-cca3d3e8-0036-4adf-ac04-c17177661cb6.png' width='300'/>
 
