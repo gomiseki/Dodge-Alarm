@@ -1,10 +1,10 @@
 {
-    "matchCount":0,
+    "matchCount":10,
     "deathPerMatch":{
         "type":"AlgorithmNomal_type",
         "maxScore":10,
         "minScore":0,
-        "ratio":0
+        "ratio":20
     },
     "KDAPerMatch":{
         "type":"AlgorithmNomal_type",
@@ -14,9 +14,9 @@
     },
     "winRate":{
         "type":"AlgorithmRatio_type",
-        "maxRatio":0,
-        "minRatio":100,
-        "ratio":0
+        "maxRatio":40,
+        "minRatio":60,
+        "ratio":20
     },
     "maxDeathPerCount":{
         "type":"AlgorithmDeath_type",
@@ -28,14 +28,14 @@
     "positionRatio":{
         "type":"AlgorithmRatio_type",
         "maxRatio":0,
-        "minRatio":100,
-        "ratio":0
+        "minRatio":80,
+        "ratio":30
     },
     "champUseRatio":{
         "type":"AlgorithmRatio_type",
         "maxRatio":0,
-        "minRatio":100,
-        "ratio":0
+        "minRatio":50,
+        "ratio":30
     },
     "userLevel":{
         "type":"AlgorithmNomal_type",

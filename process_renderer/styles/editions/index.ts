@@ -28,8 +28,8 @@ export interface IEdition{
 }
 
 const editions = {
-  N8KalKcO0HaCtfH2NUOLITasx3RIlazuiyHP5dOVmlVNQA: 강찬밥,
-  'RqrhG_wfSKRimnd6ilk8whHdM4-8cOFkUJvRXd71QT3HQLY': 고수달,
+  jbitr6WW62clA10q0oZGdXwo2ZSYYfItF5W36ZIabXLMeQ: 강찬밥,
+  'HiyJvxssxHPmyusmiYnRDjnZbhehpXn1x3IwZBlD-hT6CLQ': 고수달,
 };
 
 export default editions;
