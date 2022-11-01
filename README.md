@@ -7,7 +7,66 @@
 
 <br>
 
-## Usage(사용 설명서)
+##  🛠 Tech
+
+<br>
+
+![ReactJS](https://img.shields.io/badge/ReactJS-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Styled-Components](https://img.shields.io/badge/StyledComponents-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+<br>
+![Electron](https://img.shields.io/badge/Electron-47848F?style=for-the-badge&logo=electron&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+
+<br>
+
+## 🔗 프로젝트 구조
+
+<br>
+
+![구조도](https://user-images.githubusercontent.com/50083131/199162280-06b4a8e0-f831-4457-8f43-169b96d2f7b0.png)
+
+<br>
+
+프로그램은 크게 각각의 리덕스 스토어를 가진 세 가지 주체가 상호작용합니다.
+세 리덕스 스토어는 액션이 발생할 때 마다 IPC(Inter Process Communication)를 통해 동기화됩니다.
+
+<br>
+
+### 1. Electron을 실행하는 Main Process
+
+<br>
+
+NodeIntegration이 false임에 따라 Node API, 네이티브 모듈, 기타 등등의 역할을 수행합니다.
+
+<br>
+
+- LCU(league client update) API를 통해 유저 프로필, 게임 내 픽창 진입과 같은 팀 유저 등 파악
+- Axios를 통해 같은 팀 유저의 전적 검색
+- 미리 저장된 algorithm state에 따른 전적의 점수환산
+- fs 모듈을 통해 사용자 알고리즘을 json 파일로 저장
+
+<br>
+
+### 2. Renderer Process에서 실행되는 React 기반의 Ready Window
+
+<br>
+
+- Main Process의 LCU를 통해 얻은 정보(프로필, 전적 세부정보)를 표시
+- 사용자 지정 알고리즘을 편집해 Main Process로 전달
+
+<br>
+
+### 3. Renderer Process에서 실행되어 electron-overlay-window를 통해 League of Legends클라이언트에 오버레이되는 Main Window 
+
+<br>
+
+- Main Process에서 계산된 전적 점수를 각 유저의 초상화 위에 표시
+
+<br>
+
+## 📜 Usage(사용 설명서)
 
 <br>
 
