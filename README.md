@@ -7,6 +7,8 @@
 
 <br>
 
+[download](https://github.com/gomiseki/Dodge-Alarm/releases/download/v1.0.0-beta/Dodge-Alarm.Setup.1.0.0-beta.exe)
+
 ##  🛠 Tech
 
 <br>
